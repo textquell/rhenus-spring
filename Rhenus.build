@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+
+<project name="Rhenus" default="test" basedir=".">
+	<description>Build file for building the Rhenus project</description>
+	<tstamp property="build.date" pattern="dd.MM.yyyy" />
+	
+	<!-- current version properties -->
+	<property name="version.major" value="0" readonly="true" />
+	<property name="version.minor" value="1" readonly="true" />
+	<property name="version.buildnumber" value="0" readonly="true" /> <!-- defaults to 0, will be set by the build server for releases -->
+	
+	<property name="project.name" value="Rhenus" />
+	<property name="project.version" value="${version.major}.${version.minor}.${version.buildnumber}" />
+	
+	<property name="build.outdir" value="bin" readonly="true" />
+	<property name="build.artifactsdir" value="artifacts" readonly="true" />
+	<property name="build.configuration" value="debug" readonly="true" /> 
+		
+		
+	<!-- Major tasks -->	
+	<target name="build" description="Compiling the project">
+		<echo message="Compiling ${project.name} version ${project.version}" />
+		<mkdir dir="${build.outdir}/${build.configuration}" />
+	</target>
+
+	<target name="rebuild" description="Cleaning the workspace and build the project again">
+		<call target="cleanall" />
+		<call target="build" />
+	</target>
+	
+	<target name="test" depends="build" description="Running the tests on the fresh build">
+		<echo message="Building the Rhenus server version ${version.major}.${version.minor}.${version.buildnumber} on ${build.date} to folder ${build.artifactsdir}" />
+	</target>
+	
+	<target name="publish" depends="test" description="Publishing a fresh built">
+	</target>
+	
+	<target name="clean" description="Deletes the compiler output folder">
+		<delete dir="${build.outdir}" if="${directory::exists(build.outdir)}"/>
+	</target>
+	
+	<target name="cleanall" description="Deletes all output files and folders">
+		<delete dir="${build.outdir}" if="${directory::exists(build.outdir)}"/>
+		<delete dir="${build.artifactsdir}" if="${directory::exists(build.artifactsdir)}"/>
+	</target>
+</project>
