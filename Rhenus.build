@@ -12,7 +12,8 @@
 	<property name="project.name" value="Rhenus Service" />
 	<property name="project.version" value="${version.major}.${version.minor}" />
 	<property name="project.outdir" value="bin" readonly="true" />
-	<property name="project.artifactsDir" value="artifacts" readonly="true"/>
+	<property name="project.artifactsDir" value="artifacts" readonly="true" />
+	<property name="project.revision" value="0" readonly="true" />
 	
 	<!-- build defaults (assuming a release build) -->
 	<property name="build.configuration" value="debug" />
@@ -25,9 +26,9 @@
 	<property name="artifacts.configurationIndicator" value="" />
 		
 	<!-- Folder structure -->
-	<fileset id="rhenus.service" basedir="src">
-		<include name="ServiceMain.cs" />
-	</fileset>
+	<patternset id="rhenus.service">
+		<include name="src/ServiceMain.cs" />
+	</patternset>
 
 	<target name="help" description="Describe usage of this file">
         <echo message="Synopsis:" />
@@ -73,8 +74,9 @@
 				<!--<warning number="0519" />--> <!-- don't warn about missing member documentation -->
 			</nowarn>
 			
-			<sources failonempty="true" refid="rhenus.service">
-				<include name="src/AssemblyInfo.cs"/>
+			<sources failonempty="true">
+				<patternset refid="rhenus.service" />
+				<include name="src/AssemblyInfo.cs" />
 			</sources>
 			
 			<references>
@@ -106,7 +108,7 @@
 	<target name="create-assemblyinfo">
         <!-- ensure src/AssemblyInfo.cs is writable if it already exists -->
         <attrib file="src/AssemblyInfo.cs" readonly="false" if="${file::exists('src/AssemblyInfo.cs')}" />
-        <!-- generate the source file holding the common assembly-level attributes -->
+        <!-- generate the source file holding the assembly attributes -->
         <asminfo output="src/AssemblyInfo.cs" language="CSharp">
             <imports>
                 <import namespace="System" />
@@ -125,7 +127,7 @@
                 <attribute type="AssemblyCopyrightAttribute" value="Copyright (C) 2013-${datetime::get-year(datetime::now())} Hans Meyer" />
                 <attribute type="AssemblyTrademarkAttribute" value="" />
                 <attribute type="AssemblyCultureAttribute" value="" />
-                <attribute type="AssemblyVersionAttribute" value="${project.version}.${version.buildnumber}.0" />
+                <attribute type="AssemblyVersionAttribute" value="${project.version}.${version.buildnumber}.${project.revision}" />
                 <attribute type="AssemblyInformationalVersionAttribute" value="${project.version}" />
             </attributes>
         </asminfo>
