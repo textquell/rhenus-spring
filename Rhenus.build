@@ -9,16 +9,17 @@
 	<property name="version.minor" value="1" readonly="true" />
 	<property name="version.buildnumber" value="0" readonly="true" /> <!-- defaults to 0, will be set by the build server for releases -->
 	
-	<property name="project.name" value="Rhenus" />
+	<property name="project.name" value="Rhenus Service" />
 	<property name="project.version" value="${version.major}.${version.minor}.${version.buildnumber}" />
 	<property name="project.outdir" value="bin" readonly="true" />
 	<property name="project.artifactsDir" value="artifacts" readonly="true"/>
 	
-	<!-- build defaults -->
+	<!-- build defaults (assuming a release build) -->
 	<property name="build.configuration" value="debug" />
 	<property name="build.createDebugInfo" value="false" />
 	<property name="build.optimization" value="true" />
 	<property name="build.outputType" value="exe" /> <!-- possible values: exe||winexe||library||module -->
+	<property name="build.defines" value="TRACE" dynamic="true" />
 	
 	<property name="artifacts.extension" value=".exe" readonly="true" />
 	<property name="artifacts.configurationIndicator" value="" />
@@ -33,6 +34,7 @@
 		<property name="build.configuration" value="debug" />
 		<property name="build.createDebugInfo" value="true" />
 		<property name="build.optimization" value="false" />
+		<property name="build.defines" value="TRACE, DEBUG" />
 		<property name="artifacts.configurationIndicator" value=" D" />
 		<call target="build" />
 	</target>
@@ -41,6 +43,7 @@
 		<property name="build.configuration" value="release" />
 		<property name="build.createDebugInfo" value="false" />
 		<property name="build.optimization" value="true" />
+		<property name="build.defines" value="TRACE" />
 		<property name="artifacts.configurationIndicator" value="" />
 		<call target="build" />
 	</target>
@@ -50,7 +53,11 @@
 		<echo message="Compiling ${project.name} version ${project.version}" />
 		<mkdir dir="${project.outdir}/${build.configuration}" />
 		
-		<csc target="${build.outputType}" output="${project.artifactsDir}\Rhenus Service${artifacts.configurationIndicator}${artifacts.extension}" debug="${build.createDebugInfo}" optimize="${build.optimization}">
+		<csc target="${build.outputType}" 
+			 output="${project.artifactsDir}\Rhenus Service${artifacts.configurationIndicator}${artifacts.extension}" 
+			 debug="${build.createDebugInfo}" 
+			 optimize="${build.optimization}"
+			 define="${build.defines}">
 			<nowarn>
 				<!--<warning number="0519" />--> <!-- don't warn about missing member documentation -->
 			</nowarn>
