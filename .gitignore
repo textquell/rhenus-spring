@@ -7,6 +7,9 @@
 artifacts
 bin
 
+# Assembly information, since they are created during the build
+AssemblyInfo.cs
+
 #################
 ## Visual Studio
 #################
