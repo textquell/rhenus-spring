@@ -11,28 +11,46 @@
 	
 	<property name="project.name" value="Rhenus" />
 	<property name="project.version" value="${version.major}.${version.minor}.${version.buildnumber}" />
+	<property name="project.outdir" value="bin" readonly="true" />
+	<property name="project.artifactsDir" value="artifacts" readonly="true"/>
 	
 	<!-- build defaults -->
-	<property name="build.outdir" value="bin" readonly="true" />
-	<property name="build.artifactsDir" value="artifacts" readonly="true" />
-	<property name="build.configuration" value="debug" readonly="true" />
-	<property name="build.createDebugInfo" value="false" readonly="true" />
-	<property name="build.optimization" value="true" readonly="true" />
-	<property name="build.outputType" value="exe" readonly="true" /> <!-- possible values: exe||winexe||library||module -->
+	<property name="build.configuration" value="debug" />
+	<property name="build.createDebugInfo" value="false" />
+	<property name="build.optimization" value="true" />
+	<property name="build.outputType" value="exe" /> <!-- possible values: exe||winexe||library||module -->
 	
 	<property name="artifacts.extension" value=".exe" readonly="true" />
+	<property name="artifacts.configurationIndicator" value="" />
 		
 	<!-- Folder structure -->
 	<fileset id="rhenus.service" basedir="src">
 		<include name="ServiceMain.cs" />
 	</fileset>
 	
+	<!-- Shorthand tasks -->
+	<target name="debug" description="Performs a debug build">
+		<property name="build.configuration" value="debug" />
+		<property name="build.createDebugInfo" value="true" />
+		<property name="build.optimization" value="false" />
+		<property name="artifacts.configurationIndicator" value=" D" />
+		<call target="build" />
+	</target>
+	
+	<target name="release" description="Performs a release build">
+		<property name="build.configuration" value="release" />
+		<property name="build.createDebugInfo" value="false" />
+		<property name="build.optimization" value="true" />
+		<property name="artifacts.configurationIndicator" value="" />
+		<call target="build" />
+	</target>
+	
 	<!-- Major tasks -->
 	<target name="build" description="Compiling the project">
 		<echo message="Compiling ${project.name} version ${project.version}" />
-		<mkdir dir="${build.outdir}/${build.configuration}" />
+		<mkdir dir="${project.outdir}/${build.configuration}" />
 		
-		<csc target="${build.outputType}" output="${build.artifactsDir}\Rhenus Service${artifacts.extension}" debug="${build.createDebugInfo}" optimize="${build.optimization}">
+		<csc target="${build.outputType}" output="${project.artifactsDir}\Rhenus Service${artifacts.configurationIndicator}${artifacts.extension}" debug="${build.createDebugInfo}" optimize="${build.optimization}">
 			<nowarn>
 				<!--<warning number="0519" />--> <!-- don't warn about missing member documentation -->
 			</nowarn>
@@ -52,19 +70,19 @@
 		<call target="build" />
 	</target>
 	
-	<target name="test" depends="build" description="Running the tests on the fresh build">
-		<echo message="Building the Rhenus server version ${version.major}.${version.minor}.${version.buildnumber} on ${build.date} to folder ${build.artifactsDir}" />
+	<target name="test" depends="release" description="Running the tests on the fresh build">
+		<echo message="Building the Rhenus server version ${version.major}.${version.minor}.${version.buildnumber} on ${build.date} to folder ${project.artifactsDir}" />
 	</target>
 	
 	<target name="publish" depends="test" description="Publishing a fresh built">
 	</target>
 	
 	<target name="clean" description="Deletes the compiler output folder">
-		<delete dir="${build.outdir}" if="${directory::exists(build.outdir)}"/>
+		<delete dir="${project.outdir}" if="${directory::exists(project.outdir)}"/>
 	</target>
 	
 	<target name="cleanall" description="Deletes all output files and folders">
-		<delete dir="${build.outdir}" if="${directory::exists(build.outdir)}"/>
-		<delete dir="${build.artifactsDir}" if="${directory::exists(build.artifactsDir)}"/>
+		<delete dir="${project.outdir}" if="${directory::exists(project.outdir)}"/>
+		<delete dir="${project.artifactsDir}" if="${directory::exists(project.artifactsDir)}"/>
 	</target>
 </project>

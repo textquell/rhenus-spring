@@ -1,4 +1,13 @@
 #################
+## Rhenus
+#################
+
+# Build output folders and artifacts
+
+artifacts
+bin
+
+#################
 ## Visual Studio
 #################
 
