@@ -12,15 +12,39 @@
 	<property name="project.name" value="Rhenus" />
 	<property name="project.version" value="${version.major}.${version.minor}.${version.buildnumber}" />
 	
+	<!-- build defaults -->
 	<property name="build.outdir" value="bin" readonly="true" />
-	<property name="build.artifactsdir" value="artifacts" readonly="true" />
-	<property name="build.configuration" value="debug" readonly="true" /> 
+	<property name="build.artifactsDir" value="artifacts" readonly="true" />
+	<property name="build.configuration" value="debug" readonly="true" />
+	<property name="build.createDebugInfo" value="false" readonly="true" />
+	<property name="build.optimization" value="true" readonly="true" />
+	<property name="build.outputType" value="exe" readonly="true" /> <!-- possible values: exe||winexe||library||module -->
+	
+	<property name="artifacts.extension" value=".exe" readonly="true" />
 		
-		
-	<!-- Major tasks -->	
+	<!-- Folder structure -->
+	<fileset id="rhenus.service" basedir="src">
+		<include name="ServiceMain.cs" />
+	</fileset>
+	
+	<!-- Major tasks -->
 	<target name="build" description="Compiling the project">
 		<echo message="Compiling ${project.name} version ${project.version}" />
 		<mkdir dir="${build.outdir}/${build.configuration}" />
+		
+		<csc target="${build.outputType}" output="${build.artifactsDir}\Rhenus Service${artifacts.extension}" debug="${build.createDebugInfo}" optimize="${build.optimization}">
+			<nowarn>
+				<!--<warning number="0519" />--> <!-- don't warn about missing member documentation -->
+			</nowarn>
+			
+			<sources failonempty="true" refid="rhenus.service" />
+			
+			<references>
+				<include name="System.dll" />
+			</references>
+			
+			<resources />
+		</csc>
 	</target>
 
 	<target name="rebuild" description="Cleaning the workspace and build the project again">
@@ -29,7 +53,7 @@
 	</target>
 	
 	<target name="test" depends="build" description="Running the tests on the fresh build">
-		<echo message="Building the Rhenus server version ${version.major}.${version.minor}.${version.buildnumber} on ${build.date} to folder ${build.artifactsdir}" />
+		<echo message="Building the Rhenus server version ${version.major}.${version.minor}.${version.buildnumber} on ${build.date} to folder ${build.artifactsDir}" />
 	</target>
 	
 	<target name="publish" depends="test" description="Publishing a fresh built">
@@ -41,6 +65,6 @@
 	
 	<target name="cleanall" description="Deletes all output files and folders">
 		<delete dir="${build.outdir}" if="${directory::exists(build.outdir)}"/>
-		<delete dir="${build.artifactsdir}" if="${directory::exists(build.artifactsdir)}"/>
+		<delete dir="${build.artifactsDir}" if="${directory::exists(build.artifactsDir)}"/>
 	</target>
 </project>
