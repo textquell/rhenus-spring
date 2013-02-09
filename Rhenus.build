@@ -29,6 +29,10 @@
 	<patternset id="rhenus.service">
 		<include name="src/ServiceMain.cs" />
 	</patternset>
+	
+	<patternset id="rhenus.service.tests">
+		<include name="src/tests/*.cs" />
+	</patternset>
 
 	<target name="help" description="Describe usage of this file">
         <echo message="Synopsis:" />
@@ -63,15 +67,14 @@
 	<!-- Major tasks -->
 	<target name="build" depends="create-assemblyinfo" description="Compiling the project">
 		<echo message="Compiling ${project.name} version ${project.version}" />
-		<mkdir dir="${project.outdir}/${build.configuration}" />
 		
 		<csc target="${build.outputType}" 
-			 output="${project.artifactsDir}\Rhenus Service${artifacts.configurationIndicator}${artifacts.extension}" 
+			 output="${project.artifactsDir}\${project.name}${artifacts.configurationIndicator}${artifacts.extension}" 
 			 debug="${build.createDebugInfo}" 
 			 optimize="${build.optimization}"
 			 define="${build.defines}">
 			<nowarn>
-				<!--<warning number="0519" />--> <!-- don't warn about missing member documentation -->
+				<!-- example: <warning number="0519" />--> <!-- don't warn about missing member documentation -->
 			</nowarn>
 			
 			<sources failonempty="true">
@@ -92,8 +95,25 @@
 		<call target="build" />
 	</target>
 	
-	<target name="test" depends="release" description="Running the tests on the fresh build">
-		
+	<target name="buildTests" depends="build" description="Builds the test project">
+        <csc target="library" output="${project.artifactsDir}\${project.name}.Tests.dll" debug="${build.createDebugInfo}">
+			<sources>
+				<patternset refid="rhenus.service.tests" />
+			</sources>
+			<references>
+				<include name="System.dll" />
+				<include name="${nant::get-base-directory()}/lib/common/2.0/NUnit.Framework.dll" />
+			</references>
+        </csc>
+        <!-- this copies your App.config to a file that can be found by NUnit when testing -->
+        <!-- <copy file="Project1.Tests\App.config" tofile="${build.dir}\Project1.Tests.dll.config" /> -->
+    </target>
+	
+	<target name="test" depends="buildTests" description="Running the tests on the fresh build">
+		<nunit2 labels="true">
+			<formatter type="Plain" />
+			<test assemblyname="${project.artifactsDir}/${project.name}.Tests.dll" appconfig="MyProject.Tests.dll.config" />
+		</nunit2>
 	</target>
 	
 	<target name="publish" depends="test" description="Publishing a fresh built">
@@ -119,7 +139,7 @@
                 <attribute type="ComVisibleAttribute" value="false" />
                 <attribute type="CLSCompliantAttribute" value="true" />
 				<attribute type="Guid" value="fbc0905d-b9b2-4384-8486-ec1afa98ebbd" />
-                <attribute type="AssemblyTitleAttribute" value="Rhenus Service" />
+                <attribute type="AssemblyTitleAttribute" value="${project.name}" />
                 <attribute type="AssemblyDescriptionAttribute" value="Base service of the Rhenus framework" />
                 <attribute type="AssemblyConfigurationAttribute" value="${build.configuration}" />
                 <attribute type="AssemblyCompanyAttribute" value="http://textquell.com" />
