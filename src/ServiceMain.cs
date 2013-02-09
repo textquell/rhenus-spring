@@ -1,4 +1,8 @@
-﻿/*    <one line to give the program's name and a brief idea of what it does.>
+﻿/*    The Rhenus project
+ *    
+ *    This file is part of the Rhenus framework that aimes to be a 
+ *    horizontally scalable application server with a focus on games.
+ *    
  *    Copyright (C) 2013  Hans Meyer
  *
  *    This program is free software: you can redistribute it and/or modify
