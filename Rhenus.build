@@ -27,7 +27,8 @@
 		
 	<!-- Folder structure -->
 	<patternset id="rhenus.service">
-		<include name="src/ServiceMain.cs" />
+		<include name="src/*.cs" />
+		<include name="src/interfaces/*.cs" />
 	</patternset>
 	
 	<patternset id="rhenus.service.tests">
