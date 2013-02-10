@@ -4,7 +4,7 @@
   <PropertyGroup>
     <ProjectGuid>{1BD070E6-FFB7-43CE-BBCA-571C59C8C8B8}</ProjectGuid>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-	<UseVSHostingProcess>false</UseVSHostingProcess>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
     <OutputPath>artifacts</OutputPath>
     <OutputType>Exe</OutputType>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
@@ -17,8 +17,15 @@
     <None Include="*.nunit" />
   </ItemGroup>
   <ItemGroup>
-	<Compile Include="*.cs" />
-	<Compile Include="src\*.cs" />
+    <Compile Include="*.cs" />
+    <Compile Include="src\*.cs" />
+    <Compile Include="src\tests\*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\..\Tools\N.Ant\nant-0.92\bin\lib\common\2.0\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <Target Name="NAntBuild">
     <Message Text="Start NAnt debug build ..." />

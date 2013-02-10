@@ -11,7 +11,7 @@
 	
 	<property name="project.name" value="Rhenus Service" />
 	<property name="project.version" value="${version.major}.${version.minor}" />
-	<property name="project.outdir" value="bin" readonly="true" />
+	<property name="project.reportsDir" value="reports" readonly="true" />
 	<property name="project.artifactsDir" value="artifacts" readonly="true" />
 	<property name="project.revision" value="0" readonly="true" />
 	
@@ -111,7 +111,7 @@
 	
 	<target name="test" depends="buildTests" description="Running the tests on the fresh build">
 		<nunit2 labels="true">
-			<formatter type="Plain" />
+			<formatter type="Xml" extension=".xml" outputdir="${project.reportsDir}/NUnit" usefile="true"/>
 			<test assemblyname="${project.artifactsDir}/${project.name}.Tests.dll" appconfig="MyProject.Tests.dll.config" />
 		</nunit2>
 	</target>
@@ -120,7 +120,7 @@
 	</target>
 	
 	<target name="clean" description="Deletes all output files and folders">
-		<delete dir="${project.outdir}" if="${directory::exists(project.outdir)}"/>
+		<delete dir="${project.reportsDir}" if="${directory::exists(project.reportsDir)}"/>
 		<delete dir="${project.artifactsDir}" if="${directory::exists(project.artifactsDir)}"/>
 	</target>
 	
@@ -152,4 +152,53 @@
             </attributes>
         </asminfo>
     </target>
+	
+	<target name="create-csproj">
+		<!-- <echo file="${project.name}.csproj">
+			<?xml version="1.0" encoding="utf-8"?>
+			<Project ToolsVersion="2.0" DefaultTargets="NAntBuild" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+				<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+				<PropertyGroup>
+					<ProjectGuid>{1BD070E6-FFB7-43CE-BBCA-571C59C8C8B8}</ProjectGuid>
+					<TargetFrameworkversion>v2.0</TargetFrameworkVersion>
+					<UseVSHostingProcess>false</UseVSHostingProcess>
+					<OutputPath>artifacts</OutputPath>
+					<OutputType>Exe</OutputType>
+					<GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+					<ErrorReport>prompt</ErrorReport>
+				</PropertyGroup>
+				<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+				<ItemGroup>
+					<None Include="*.build" />
+					<None Include="*.txt" />
+					<None Include="*.nunit" />
+				</ItemGroup>
+				<ItemGroup>
+					<Compile Include="*.cs" />
+					<Compile Include="src\*.cs" />
+					<Compile Include="src\tests\*.cs" />
+				</ItemGroup>
+				<ItemGroup>
+					<Reference Include="nunit.framework">
+						<HintPath>${nant::get-base-directory()}\lib\common\2.0\nunit.framework.dll</HintPath>
+					</Reference>
+					<Reference Include="System" />
+				</ItemGroup>
+					<Target Name="NAntBuild">
+					<Message Text="Start NAnt debug build ..." />
+					<Exec Command="nant debug build" />
+					<Message Text="NAnt complete" />
+				</Target>
+				<Target Name="Clean">
+					<Message Text="Start NAnt debug clean ..." />
+					<Exec Command="nant clean" />
+					<Message Text="NAnt complete" />
+				</Target>
+				<Target Name="Rebuild">
+					<CallTarget Targets="Clean" />
+					<CallTarget Targets="NAntBuild" />
+				</Target>
+			</Project>
+		</echo>-->
+	</target>
 </project>
