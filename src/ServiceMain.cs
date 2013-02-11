@@ -19,15 +19,32 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  */
 
+using System;
+
 namespace Rhenus
 {
     namespace Spring
     {
         class Service
         {
+            #region Fields
+            public ITaskScheduler TaskScheduler { get; private set; }
+            #endregion
+
             static void Main( string[] args )
             {
+                if ( args.Length >= 1 )
+                {
+                    // TODO: for '-help' print a small help, for '-license' print some license information. See http://www.gnu.org/licenses/gpl.html -> How to apply...
+                }
+                else //assume that the user wants to start the service
+                {
+                    Service currentService = new Service();
+                    currentService.TaskScheduler = new SimpleTaskScheduler();
+
+                    // TODO: Keep the application running and wait for someone telling it to stop
+                }
             }
         }
-    }    
+    }
 }

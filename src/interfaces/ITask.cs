@@ -45,7 +45,7 @@ namespace Rhenus
             /// <param name="state">is used to hand over information objects to the local thread
             /// pool. This is needed for compliance with the 
             /// <see cref="System.Threading.WaitCallback"/> delegate</param>
-            public void Run(object state);
+            void Run( object state );
         }
     }
 }
