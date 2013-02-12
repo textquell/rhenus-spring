@@ -29,14 +29,14 @@ namespace Rhenus
             /// Schedules a task to run a soon as possible.
             /// </summary>
             /// <param name="task">the task to execute</param>
-            void ScheduleTask( ITask task );
+            void ScheduleTask( ref ITask task );
 
             /// <summary>
             /// Schedules a task to run as soon as possible when the startTime has passed.
             /// </summary>
             /// <param name="task">the task to execute</param>
             /// <param name="startTime">the time when the task should be run</param>
-            void ScheduleTask( ITask task, System.DateTime startTime );
+            void ScheduleTask( ref ITask task, System.DateTime startTime );
         }
     }
 }
