@@ -41,6 +41,7 @@ namespace Rhenus
                 {
                     Service currentService = new Service();
                     currentService.TaskScheduler = new SimpleTaskScheduler();
+                    Console.WriteLine(Configuration.Settings.Default.MyFirstSetting);
 
                     // TODO: Keep the application running and wait for someone telling it to stop
                 }
