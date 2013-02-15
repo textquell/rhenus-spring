@@ -1,0 +1,17 @@
+<ccm>
+<analyze>
+<folder>src</folder>
+</analyze>
+<exclude>
+<file></file>
+<folder>tests</folder>
+<function></function>
+</exclude>
+<recursive>yes</recursive>
+<outputXML>yes</outputXML>
+<numMetrics>30</numMetrics>
+<suppressMethodSignatures>yes</suppressMethodSignatures>
+<fileExtensions>
+<fileExtension>cs</fileExtension>
+</fileExtensions>
+<ccm>
