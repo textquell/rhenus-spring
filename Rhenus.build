@@ -116,7 +116,7 @@
   
   <target name="test" depends="buildTests" description="Running the tests on the fresh build">
     <nunit2 labels="true">
-      <formatter type="Plain" />
+      <formatter type="Xml" extension=".xml" outputdir="${project.reportsDir}/NUnit" usefile="true"/>
       <test assemblyname="${project.artifactsDir}/${project.name}.Tests.dll" appconfig="MyProject.Tests.dll.config" />
     </nunit2>
   </target>
