@@ -121,7 +121,7 @@
     </nunit2>
   </target>
   
-  <target name="publish" depends="test, sign" description="Publishing a fresh built">
+  <target name="publish" depends="test" description="Publishing a fresh built">
   </target>
   
   <target name="clean" description="Deletes all output files and folders">
@@ -130,7 +130,7 @@
   </target>
   
   <!-- Helper targets -->
-  <target name="create-assemblyinfo">
+  <target name="create-assemblyinfo" description="Creates an assembly info file to be comiled with the assembly">
         <!-- ensure src/AssemblyInfo.cs is writable if it already exists -->
         <attrib file="src/AssemblyInfo.cs" readonly="false" if="${file::exists('src/AssemblyInfo.cs')}" />
         <!-- generate the source file holding the assembly attributes -->
@@ -158,12 +158,7 @@
         </asminfo>
     </target>
 
-  <target name="sign">
-    <delay-sign keyfile="Rhenus.Service.pfk" verbose="true">
-    <targets>
-        <include name="${project.artifactsDir}\${project.name}${artifacts.configurationIndicator}${artifacts.extension}" />
-    </targets>
-</delay-sign>
-    
+  <target name="sign" descritpion="Signs the output assembly">
   </target>
+  
 </project>
