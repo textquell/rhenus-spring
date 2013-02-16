@@ -7,13 +7,13 @@
   <!-- current version properties -->
   <property name="version.major" value="0" readonly="true" />
   <property name="version.minor" value="1" readonly="true" />
-  <property name="version.buildnumber" value="0" readonly="true" /> <!-- defaults to 0, will be set by the build server for releases -->
-  <property name="version.revision" value="0" readonly="true" />
+  <property name="version.buildnumber" value="0" /> <!-- defaults to 0, will be set by the build server for releases -->
+  <property name="version.revision" value="0" />
   
   <property name="project.name" value="Rhenus Service" />
   <property name="project.version" value="${version.major}.${version.minor}" />
-  <property name="project.outdir" value="bin" readonly="true" />
-  <property name="project.artifactsDir" value="artifacts" readonly="true" />
+  <property name="project.outdir" value="bin" />
+  <property name="project.artifactsDir" value="artifacts" />
   
   <!-- build defaults (assuming a release build) -->
   <property name="build.configuration" value="debug" />
@@ -100,7 +100,7 @@
     <call target="build" />
   </target>
   
-  <target name="buildTests" depends="build" description="Builds the test project">
+  <target name="buildTests" description="Builds the test project">
         <csc target="library" output="${project.artifactsDir}\${project.name}.Tests.dll" debug="${build.createDebugInfo}">
       <sources>
         <patternset refid="rhenus.service.tests" />
@@ -121,7 +121,7 @@
     </nunit2>
   </target>
   
-  <target name="publish" depends="test" description="Publishing a fresh built">
+  <target name="publish" depends="test, sign" description="Publishing a fresh built">
   </target>
   
   <target name="clean" description="Deletes all output files and folders">
@@ -157,4 +157,13 @@
             </attributes>
         </asminfo>
     </target>
+
+  <target name="sign">
+    <delay-sign keyfile="Rhenus.Service.pfk" verbose="true">
+    <targets>
+        <include name="${project.artifactsDir}\${project.name}${artifacts.configurationIndicator}${artifacts.extension}" />
+    </targets>
+</delay-sign>
+    
+  </target>
 </project>
