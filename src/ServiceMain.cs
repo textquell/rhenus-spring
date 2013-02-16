@@ -25,6 +25,9 @@ namespace Rhenus
 {
     namespace Spring
     {
+
+        // TODO: Strong-name assembly file
+
         class Service
         {
             #region Fields
