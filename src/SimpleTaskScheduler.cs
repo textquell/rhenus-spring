@@ -26,7 +26,7 @@ using System.Collections.Generic;
 namespace Rhenus.Spring
 {
     /// <summary>
-    /// A simple implementation of the <see cref="Rhenus.Spring.ITaskscheduler">TaskScheduler
+    /// A simple implementation of the <see cref="Rhenus.Spring.ITaskScheduler">TaskScheduler
     /// </see> Interface.
     /// </summary>
     /// <remarks>
@@ -37,16 +37,6 @@ namespace Rhenus.Spring
     /// </remarks>
     class SimpleTaskScheduler: ITaskScheduler
     {
-        #region Fields
-        private List<ScheduledTask> activeTasks;
-        #endregion
-
-        public SimpleTaskScheduler()
-        {
-            activeTasks = new List<ScheduledTask>();
-            activeTasks.Clear();
-        }
-
         public void ScheduleTask( ITask task )
         {
             // TODO: write a message when throwing this error. Get this message from a ressource file
@@ -57,34 +47,24 @@ namespace Rhenus.Spring
         public void ScheduleTask( ITask task, DateTime startTime )
         {
             if ( task == null ) { throw new System.ArgumentNullException(); }
-            ScheduledTask newTask = new ScheduledTask( ref task, startTime, this );
-            activeTasks.Add( newTask );
+            if ( startTime <= DateTime.Now ) { throw new System.ArgumentNullException(); }
+            DelayedTask taskToExecute = new DelayedTask( task, startTime );
         }
 
-        private class ScheduledTask: IDisposable
+        private class DelayedTask
         {
             private ITask taskToRun;
-            private ITaskScheduler executor;
-            private System.Timers.Timer timer;
+            private Timer timer;
 
-            public ScheduledTask( ref ITask task, DateTime startTime, ITaskScheduler executor )
+            public DelayedTask( ITask task, DateTime startTime )
             {
                 this.taskToRun = task;
-                this.executor = executor;
-                timer = new System.Timers.Timer( startTime.Ticks - DateTime.Now.Ticks );
-                timer.AutoReset = false;
-                timer.Elapsed += new System.Timers.ElapsedEventHandler( this.timeToRun );
+                 timer = new Timer(new TimerCallback( taskToRun.Run ), null, startTime-DateTime.Now, new TimeSpan(-1));
             }
 
             private void timeToRun( object sender, System.Timers.ElapsedEventArgs args )
             {
-                executor.ScheduleTask( taskToRun );
-                this.Dispose();
-            }
-
-            public void Dispose()
-            {
-                this.timer.Dispose();
+                System.Threading.ThreadPool.QueueUserWorkItem( new WaitCallback( taskToRun.Run ) );
             }
         }
     }

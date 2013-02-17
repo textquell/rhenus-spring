@@ -42,8 +42,20 @@ namespace Rhenus
             {
                 ITask task = new DemoTask();
                 scheduler.ScheduleTask( task );
-                DemoTask result = (DemoTask)task;
                 System.Threading.Thread.Sleep( 5 );
+
+                DemoTask result = (DemoTask)task;
+                Assert.AreEqual( 84, result.DemoInt );
+            }
+
+            [Test]
+            public void TestForDelayedExecution()
+            {
+                ITask task = new DemoTask();
+                scheduler.ScheduleTask( task, DateTime.Now.AddMilliseconds( 10 ) );
+                System.Threading.Thread.Sleep( 20 );
+
+                DemoTask result = (DemoTask)task;
                 Assert.AreEqual( 84, result.DemoInt );
             }
 
@@ -60,8 +72,7 @@ namespace Rhenus
             public void ExpectNullRefExceptionDelayed()
             {
                 ITask task = null;
-                scheduler.ScheduleTask( task, DateTime.Now.AddMilliseconds( 1 ) );
-                System.Threading.Thread.Sleep( 5 );
+                scheduler.ScheduleTask( task, DateTime.Now.AddMilliseconds( 5 ) );
             }
         }
     }

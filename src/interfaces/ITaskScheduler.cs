@@ -21,6 +21,9 @@
 
 namespace Rhenus.Spring
 {
+    /// <summary>
+    /// Provides scheduling means for <see cref="Rhenus.Spring.ITask">tasks</see>
+    /// </summary>
     public interface ITaskScheduler
     {
         /// <summary>

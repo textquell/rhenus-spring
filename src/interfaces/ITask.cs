@@ -39,6 +39,12 @@ namespace Rhenus.Spring
         /// This method is called by the <see cref="Rhenus.Spring.ITaskScheduler"/>. This 
         /// assumes that the task has been set up beforehand and has access to all resources
         /// needed.
+        /// 
+        /// If the execution of the task is delayed or recurring, a 
+        /// <see cref="System.Timers.Timer"/> is caring about the execution of the task. If the
+        /// timer fires the elapsed event before finishing execution of the current task, the
+        /// new task exection is run in another Thread of the ThreadPool. This requires the task
+        /// to be reentrant.
         /// </remarks>
         /// <param name="state">is used to hand over information objects to the local thread
         /// pool. This is needed for compliance with the 
