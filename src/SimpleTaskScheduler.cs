@@ -23,61 +23,68 @@ using System;
 using System.Threading;
 using System.Collections.Generic;
 
-namespace Rhenus
+namespace Rhenus.Spring
 {
-    namespace Spring
+    /// <summary>
+    /// A simple implementation of the <see cref="Rhenus.Spring.ITaskscheduler">TaskScheduler
+    /// </see> Interface.
+    /// </summary>
+    /// <remarks>
+    /// This class is working with the <see cref="System.Threading.ThreadPool">ThreadPool</see>
+    /// to execute tasks. When a task is scheduled without further details, its 
+    /// <see cref="Rhenus.Spring.ITask.Run">Run</see> method is handed over to the ThreadPool
+    /// for execution. 
+    /// </remarks>
+    class SimpleTaskScheduler: ITaskScheduler
     {
-        class SimpleTaskScheduler: ITaskScheduler
+        #region Fields
+        private List<ScheduledTask> activeTasks;
+        #endregion
+
+        public SimpleTaskScheduler()
         {
-            #region Fields
-            private List<ScheduledTask> activeTasks;
-            #endregion
+            activeTasks = new List<ScheduledTask>();
+            activeTasks.Clear();
+        }
 
-            public SimpleTaskScheduler()
+        public void ScheduleTask( ITask task )
+        {
+            // TODO: write a message when throwing this error. Get this message from a ressource file
+            if ( task == null ) { throw new System.ArgumentNullException(); }
+            ThreadPool.QueueUserWorkItem( new WaitCallback( task.Run ) );
+        }
+
+        public void ScheduleTask( ITask task, DateTime startTime )
+        {
+            if ( task == null ) { throw new System.ArgumentNullException(); }
+            ScheduledTask newTask = new ScheduledTask( ref task, startTime, this );
+            activeTasks.Add( newTask );
+        }
+
+        private class ScheduledTask: IDisposable
+        {
+            private ITask taskToRun;
+            private ITaskScheduler executor;
+            private System.Timers.Timer timer;
+
+            public ScheduledTask( ref ITask task, DateTime startTime, ITaskScheduler executor )
             {
-                activeTasks = new List<ScheduledTask>();
-                activeTasks.Clear();
+                this.taskToRun = task;
+                this.executor = executor;
+                timer = new System.Timers.Timer( startTime.Ticks - DateTime.Now.Ticks );
+                timer.AutoReset = false;
+                timer.Elapsed += new System.Timers.ElapsedEventHandler( this.timeToRun );
             }
 
-            public void ScheduleTask( ITask task )
+            private void timeToRun( object sender, System.Timers.ElapsedEventArgs args )
             {
-                // TODO: write a message when throwing this error. Get this message from a ressource file
-                if ( task == null ) { throw new System.ArgumentNullException(); }
-                ThreadPool.QueueUserWorkItem( new WaitCallback( task.Run ) );
+                executor.ScheduleTask( taskToRun );
+                this.Dispose();
             }
 
-            public void ScheduleTask( ITask task, DateTime startTime )
+            public void Dispose()
             {
-                if ( task == null ) { throw new System.ArgumentNullException(); }
-                ScheduledTask newTask = new ScheduledTask( ref task, startTime, this );
-                activeTasks.Add( newTask );
-            }
-
-            private class ScheduledTask: IDisposable
-            {
-                private ITask taskToRun;
-                private ITaskScheduler executor;
-                private System.Timers.Timer timer;
-
-                public ScheduledTask( ref ITask task, DateTime startTime, ITaskScheduler executor)
-                {
-                    this.taskToRun = task;
-                    this.executor = executor;
-                    timer = new System.Timers.Timer( startTime.Ticks - DateTime.Now.Ticks );
-                    timer.AutoReset = false;
-                    timer.Elapsed += new System.Timers.ElapsedEventHandler(this.timeToRun);
-                }
-
-                private void timeToRun(object sender, System.Timers.ElapsedEventArgs args)
-                {
-                    executor.ScheduleTask( taskToRun );
-                    this.Dispose();
-                }
-
-                public void Dispose()
-                {
-                    this.timer.Dispose();
-                }
+                this.timer.Dispose();
             }
         }
     }

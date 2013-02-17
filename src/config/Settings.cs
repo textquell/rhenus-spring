@@ -22,66 +22,60 @@
 using System.Configuration;
 using System.ComponentModel;
 
-namespace Rhenus
+namespace Rhenus.Spring.Configuration
 {
 
-    namespace Spring
+    // TODO: Check for the sections in the config file and load modules accordingly
+
+    [SettingsGroupNameAttribute( "Rhenus.Service" )]
+    internal sealed class Settings: ApplicationSettingsBase
     {
-        namespace Configuration
+
+        private static Settings defaultInstance = ((Settings)(ApplicationSettingsBase.Synchronized( new Settings() )));
+
+        public static Settings Default
         {
-            // TODO: Check for the sections in the config file and load modules accordingly
-
-            [SettingsGroupNameAttribute( "Rhenus.Service" )]
-            internal sealed class Settings: ApplicationSettingsBase
+            get
             {
+                return defaultInstance;
+            }
+        }
 
-                private static Settings defaultInstance = ((Settings)(ApplicationSettingsBase.Synchronized( new Settings() )));
+        public Settings()
+        {
+            this.SettingChanging += this.SettingChangingEventHandler;
+            this.PropertyChanged += this.PropertyChangedEventHandler;
+            this.SettingsLoaded += this.SettingsLoadedEventHandler;
+            this.SettingsSaving += this.SettingsSavingEventHandler;
+        }
 
-                public static Settings Default
-                {
-                    get
-                    {
-                        return defaultInstance;
-                    }
-                }
+        private void SettingsLoadedEventHandler( object sender, SettingsLoadedEventArgs e )
+        {
+            System.Diagnostics.Trace.TraceInformation( "Settings loaded" );
+        }
 
-                public Settings()
-                {
-                    this.SettingChanging += this.SettingChangingEventHandler;
-                    this.PropertyChanged += this.PropertyChangedEventHandler;
-                    this.SettingsLoaded += this.SettingsLoadedEventHandler;
-                    this.SettingsSaving += this.SettingsSavingEventHandler;
-                }
+        private void PropertyChangedEventHandler( object sender, PropertyChangedEventArgs e )
+        {
+            System.Diagnostics.Trace.TraceInformation( "Property changed" );
+        }
 
-                private void SettingsLoadedEventHandler( object sender, SettingsLoadedEventArgs e )
-                {
-                    System.Diagnostics.Trace.TraceInformation( "Settings loaded" );
-                }
+        private void SettingChangingEventHandler( object sender, SettingChangingEventArgs e )
+        {
+            System.Diagnostics.Trace.TraceInformation( "Settings changing" );
+        }
 
-                private void PropertyChangedEventHandler( object sender, PropertyChangedEventArgs e )
-                {
-                    System.Diagnostics.Trace.TraceInformation( "Property changed" );
-                }
+        private void SettingsSavingEventHandler( object sender, CancelEventArgs e )
+        {
+            System.Diagnostics.Trace.TraceInformation( "Settings saved" );
+        }
 
-                private void SettingChangingEventHandler( object sender, SettingChangingEventArgs e )
-                {
-                    System.Diagnostics.Trace.TraceInformation( "Settings changing" );
-                }
-
-                private void SettingsSavingEventHandler( object sender, CancelEventArgs e )
-                {
-                    System.Diagnostics.Trace.TraceInformation( "Settings saved" );
-                }
-
-                [ApplicationScopedSettingAttribute()]
-                [DefaultSettingValueAttribute( "Some Setting" )]
-                public string MyFirstSetting
-                {
-                    get
-                    {
-                        return (string)this["MyFirstSetting"];
-                    }
-                }
+        [ApplicationScopedSettingAttribute()]
+        [DefaultSettingValueAttribute( "Some Setting" )]
+        public string MyFirstSetting
+        {
+            get
+            {
+                return (string)this["MyFirstSetting"];
             }
         }
     }

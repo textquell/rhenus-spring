@@ -19,33 +19,30 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  */
 
-namespace Rhenus
+namespace Rhenus.Spring
 {
-    namespace Spring
+    /// <summary>
+    /// This interface is representing an atomic work item, a task. 
+    /// </summary>
+    /// <remarks>
+    /// Tasks don't need to know
+    /// much about themselves, they only need to be run. So an implementing class would care
+    /// about the resources a task needs and is scheduled to the 
+    /// <see cref="Rhenus.Spring.ITaskScheduler"/> afterwards.
+    /// </remarks>
+    public interface ITask
     {
         /// <summary>
-        /// This interface is representing an atomic work item, a task. 
+        /// Executes the task in the <see cref="Rhenus.Spring.ITaskScheduler"/>.
         /// </summary>
         /// <remarks>
-        /// Tasks don't need to know
-        /// much about themselves, they only need to be run. So an implementing class would care
-        /// about the resources a task needs and is scheduled to the 
-        /// <see cref="Rhenus.Spring.ITaskScheduler"/> afterwards.
+        /// This method is called by the <see cref="Rhenus.Spring.ITaskScheduler"/>. This 
+        /// assumes that the task has been set up beforehand and has access to all resources
+        /// needed.
         /// </remarks>
-        public interface ITask
-        {
-            /// <summary>
-            /// Executes the task in the <see cref="Rhenus.Spring.ITaskScheduler"/>.
-            /// </summary>
-            /// <remarks>
-            /// This method is called by the <see cref="Rhenus.Spring.ITaskScheduler"/>. This 
-            /// assumes that the task has been set up beforehand and has access to all resources
-            /// needed.
-            /// </remarks>
-            /// <param name="state">is used to hand over information objects to the local thread
-            /// pool. This is needed for compliance with the 
-            /// <see cref="System.Threading.WaitCallback"/> delegate</param>
-            void Run( object state );
-        }
+        /// <param name="state">is used to hand over information objects to the local thread
+        /// pool. This is needed for compliance with the 
+        /// <see cref="System.Threading.WaitCallback"/> delegate</param>
+        void Run( object state );
     }
 }

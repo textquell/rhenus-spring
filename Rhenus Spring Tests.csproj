@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="src\*.cs" />
     <Compile Include="src\interfaces\*.cs" />
+    <Compile Include="src\config\*.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
