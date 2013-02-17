@@ -32,8 +32,15 @@ namespace Rhenus
         class Service
         {
             #region Fields
-            public ITaskScheduler TaskScheduler { get; private set; }
+            ITaskScheduler TaskScheduler { get; set; }
+            bool running;
             #endregion
+
+            Service()
+            {
+                this.TaskScheduler = new SimpleTaskScheduler();
+                this.running = false;
+            }
 
             static void Main( string[] args )
             {
@@ -48,17 +55,29 @@ namespace Rhenus
                     {
                         printHelp();
                     }
-                } 
+                }
                 #endregion
                 else //assume that the user wants to start the service
                 {
+                    Console.WriteLine(Configuration.Settings.Default.MyFirstSetting);
                     Service currentService = new Service();
-                    currentService.TaskScheduler = new SimpleTaskScheduler();
+                    currentService.StartRunning();
 
                     // TODO: Keep the application running and wait for someone telling it to stop
                 }
             }
 
+            void StartRunning()
+            {
+                int loopPasses = 0;
+                while ( this.running )
+                {
+                    if ( loopPasses == 100 ) { this.running = false; }
+                    loopPasses++;
+                }
+            }
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1303", MessageId = "System.Console.WriteLine(System.String)" )]
             private static void printHelp()
             {
                 Console.WriteLine( "" );
@@ -76,6 +95,8 @@ namespace Rhenus
                 Console.WriteLine( "" );
             }
 
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1303", MessageId = "System.Console.WriteLine(System.String)" )]
             private static void printLicenseInfo()
             {
                 Console.WriteLine( "" );

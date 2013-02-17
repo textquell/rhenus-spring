@@ -39,14 +39,14 @@ namespace Rhenus
                 activeTasks.Clear();
             }
 
-            public void ScheduleTask( ref ITask task )
+            public void ScheduleTask( ITask task )
             {
                 // TODO: write a message when throwing this error. Get this message from a ressource file
                 if ( task == null ) { throw new System.ArgumentNullException(); }
                 ThreadPool.QueueUserWorkItem( new WaitCallback( task.Run ) );
             }
 
-            public void ScheduleTask( ref ITask task, DateTime startTime )
+            public void ScheduleTask( ITask task, DateTime startTime )
             {
                 if ( task == null ) { throw new System.ArgumentNullException(); }
                 ScheduledTask newTask = new ScheduledTask( ref task, startTime, this );
@@ -70,7 +70,7 @@ namespace Rhenus
 
                 private void timeToRun(object sender, System.Timers.ElapsedEventArgs args)
                 {
-                    executor.ScheduleTask( ref taskToRun );
+                    executor.ScheduleTask( taskToRun );
                     this.Dispose();
                 }
 

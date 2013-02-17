@@ -41,26 +41,26 @@ namespace Rhenus
             public void TestForRunExecution()
             {
                 ITask task = new DemoTask();
-                scheduler.ScheduleTask( ref task );
+                scheduler.ScheduleTask( task );
                 DemoTask result = (DemoTask)task;
                 System.Threading.Thread.Sleep( 5 );
                 Assert.AreEqual( 84, result.DemoInt );
             }
 
             [Test]
-            [ExpectedException(typeof (System.ArgumentNullException))]
+            [ExpectedException( typeof( System.ArgumentNullException ) )]
             public void ExpectNullRefExceptionSimple()
             {
                 ITask task = null;
-                scheduler.ScheduleTask( ref task );
+                scheduler.ScheduleTask( task );
             }
 
             [Test]
-            [ExpectedException(typeof(System.ArgumentNullException))]
+            [ExpectedException( typeof( System.ArgumentNullException ) )]
             public void ExpectNullRefExceptionDelayed()
             {
                 ITask task = null;
-                scheduler.ScheduleTask(ref task, DateTime.Now.AddMilliseconds(1));
+                scheduler.ScheduleTask( task, DateTime.Now.AddMilliseconds( 1 ) );
                 System.Threading.Thread.Sleep( 5 );
             }
         }
