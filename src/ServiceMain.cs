@@ -36,15 +36,41 @@ namespace Rhenus
 
             static void Main( string[] args )
             {
+                #region ArgumentHandling
                 if ( args.Length >= 1 )
                 {
-                    // TODO: for '-help' print a small help, for '-license' print some license information. See http://www.gnu.org/licenses/gpl.html -> How to apply...
-                }
+                    if ( args[0] == "-license" )
+                    {
+                        Console.WriteLine( "" );
+                        Console.WriteLine( "  Rhenus Server  Copyright (C) 2013  Hans Meyer" );
+                        Console.WriteLine( "" );
+                        Console.WriteLine( "  This program comes with ABSOLUTELY NO WARRANTY." );
+                        Console.WriteLine( "  This is free software, and you are welcome to redistribute it" );
+                        Console.WriteLine( "  under certain conditions; see LICENSE.md for details." );
+
+                    }
+                    else
+                    {
+                        Console.WriteLine( "" );
+                        Console.WriteLine( "  The Rhenus Server Framework" );
+                        Console.WriteLine( "" );
+                        Console.WriteLine( "  This executable is managing the services running" );
+                        Console.WriteLine( "  on top of it. It is scheduling tasks for them and " );
+                        Console.WriteLine( "  monitors their execution." );
+                        Console.WriteLine( "" );
+                        Console.WriteLine( "  This project is Open Source under the terms of " );
+                        Console.WriteLine( "  GNU GPLv3. Find out more about the license with " );
+                        Console.WriteLine( "  '-license'." );
+                        Console.WriteLine( "" );
+                        Console.WriteLine( "  To start the server, arguments must be empty." );
+                        Console.WriteLine( "" );
+                    }
+                } 
+                #endregion
                 else //assume that the user wants to start the service
                 {
                     Service currentService = new Service();
                     currentService.TaskScheduler = new SimpleTaskScheduler();
-                    Console.WriteLine(Configuration.Settings.Default.MyFirstSetting);
 
                     // TODO: Keep the application running and wait for someone telling it to stop
                 }
