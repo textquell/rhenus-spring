@@ -29,6 +29,8 @@ namespace Rhenus
     {
         namespace Configuration
         {
+            // TODO: Check for the sections in the config file and load modules accordingly
+
             [SettingsGroupNameAttribute( "Rhenus.Service" )]
             internal sealed class Settings: ApplicationSettingsBase
             {
