@@ -33,13 +33,13 @@ namespace Rhenus
         {
             #region Fields
             ITaskScheduler TaskScheduler { get; set; }
-            bool running;
+            bool isRunning;
             #endregion
 
             Service()
             {
                 this.TaskScheduler = new SimpleTaskScheduler();
-                this.running = false;
+                this.isRunning = false;
             }
 
             static void Main( string[] args )
@@ -62,17 +62,18 @@ namespace Rhenus
                     Console.WriteLine(Configuration.Settings.Default.MyFirstSetting);
                     Service currentService = new Service();
                     currentService.StartRunning();
-
-                    // TODO: Keep the application running and wait for someone telling it to stop
                 }
             }
 
             void StartRunning()
             {
+                // TODO: Set up the Service here, loading initial modules and setting requiered properties.
                 int loopPasses = 0;
-                while ( this.running )
+                while ( this.isRunning )
                 {
-                    if ( loopPasses == 100 ) { this.running = false; }
+                    // TODO: Call a method of this class to tell it to stop. Find a way to input this shutDown command from the user side or programmatically
+                    // TODO: Replace the loop count with meanigful instructions while the service is running
+                    if ( loopPasses == 100 ) { this.isRunning = false; }
                     loopPasses++;
                 }
             }
@@ -94,7 +95,6 @@ namespace Rhenus
                 Console.WriteLine( "  To start the server, arguments must be empty." );
                 Console.WriteLine( "" );
             }
-
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1303", MessageId = "System.Console.WriteLine(System.String)" )]
             private static void printLicenseInfo()
