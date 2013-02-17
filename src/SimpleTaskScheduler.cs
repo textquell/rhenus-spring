@@ -48,6 +48,7 @@ namespace Rhenus
 
             public void ScheduleTask( ref ITask task, DateTime startTime )
             {
+                if ( task == null ) { throw new System.ArgumentNullException(); }
                 ScheduledTask newTask = new ScheduledTask( ref task, startTime, this );
                 activeTasks.Add( newTask );
             }

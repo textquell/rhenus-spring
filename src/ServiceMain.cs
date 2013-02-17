@@ -27,6 +27,7 @@ namespace Rhenus
     {
 
         // TODO: Strong-name assembly file
+        // TODO: Find out if it is possible to add a 'Parallel' attribute to a class that executes all the classes methods through the task scheduler
 
         class Service
         {
