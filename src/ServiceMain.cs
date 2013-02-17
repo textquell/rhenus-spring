@@ -41,29 +41,11 @@ namespace Rhenus
                 {
                     if ( args[0] == "-license" )
                     {
-                        Console.WriteLine( "" );
-                        Console.WriteLine( "  Rhenus Server  Copyright (C) 2013  Hans Meyer" );
-                        Console.WriteLine( "" );
-                        Console.WriteLine( "  This program comes with ABSOLUTELY NO WARRANTY." );
-                        Console.WriteLine( "  This is free software, and you are welcome to redistribute it" );
-                        Console.WriteLine( "  under certain conditions; see LICENSE.md for details." );
-
+                        printLicenseInfo();
                     }
                     else
                     {
-                        Console.WriteLine( "" );
-                        Console.WriteLine( "  The Rhenus Server Framework" );
-                        Console.WriteLine( "" );
-                        Console.WriteLine( "  This executable is managing the services running" );
-                        Console.WriteLine( "  on top of it. It is scheduling tasks for them and " );
-                        Console.WriteLine( "  monitors their execution." );
-                        Console.WriteLine( "" );
-                        Console.WriteLine( "  This project is Open Source under the terms of " );
-                        Console.WriteLine( "  GNU GPLv3. Find out more about the license with " );
-                        Console.WriteLine( "  '-license'." );
-                        Console.WriteLine( "" );
-                        Console.WriteLine( "  To start the server, arguments must be empty." );
-                        Console.WriteLine( "" );
+                        printHelp();
                     }
                 } 
                 #endregion
@@ -74,6 +56,33 @@ namespace Rhenus
 
                     // TODO: Keep the application running and wait for someone telling it to stop
                 }
+            }
+
+            private static void printHelp()
+            {
+                Console.WriteLine( "" );
+                Console.WriteLine( "  The Rhenus Server Framework" );
+                Console.WriteLine( "" );
+                Console.WriteLine( "  This executable is managing the services running" );
+                Console.WriteLine( "  on top of it. It is scheduling tasks for them and " );
+                Console.WriteLine( "  monitors their execution." );
+                Console.WriteLine( "" );
+                Console.WriteLine( "  This project is Open Source under the terms of " );
+                Console.WriteLine( "  GNU GPLv3. Find out more about the license with " );
+                Console.WriteLine( "  '-license'." );
+                Console.WriteLine( "" );
+                Console.WriteLine( "  To start the server, arguments must be empty." );
+                Console.WriteLine( "" );
+            }
+
+            private static void printLicenseInfo()
+            {
+                Console.WriteLine( "" );
+                Console.WriteLine( "  Rhenus Server  Copyright (C) 2013  Hans Meyer" );
+                Console.WriteLine( "" );
+                Console.WriteLine( "  This program comes with ABSOLUTELY NO WARRANTY." );
+                Console.WriteLine( "  This is free software, and you are welcome to redistribute it" );
+                Console.WriteLine( "  under certain conditions; see LICENSE.md for details." );
             }
         }
     }
