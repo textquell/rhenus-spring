@@ -53,7 +53,7 @@ namespace Rhenus
             {
                 ITask task = new DemoTask();
                 scheduler.ScheduleTask( task, DateTime.Now.AddMilliseconds( 10 ) );
-                System.Threading.Thread.Sleep( 20 );
+                System.Threading.Thread.Sleep( 30 );
 
                 DemoTask result = (DemoTask)task;
                 Assert.AreEqual( 84, result.DemoInt );
