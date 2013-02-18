@@ -67,6 +67,7 @@ namespace Rhenus
 
             void StartRunning()
             {
+                AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( this.CatchUnhandledException );
                 // TODO: Set up the Service here, loading initial modules and setting requiered properties.
                 int loopPasses = 0;
                 while ( this.isRunning )
@@ -76,6 +77,15 @@ namespace Rhenus
                     if ( loopPasses == 100 ) { this.isRunning = false; }
                     loopPasses++;
                 }
+                throw new DivideByZeroException( "Hihi" );
+            }
+
+            private void CatchUnhandledException( object sender, UnhandledExceptionEventArgs e )
+            {
+                Exception criticalException = (Exception)e.ExceptionObject;
+                Console.WriteLine( "Unhandled Exception caught: " + criticalException.Message );
+                Console.WriteLine(criticalException.StackTrace );
+                Environment.Exit( 1 );
             }
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1303", MessageId = "System.Console.WriteLine(System.String)" )]
