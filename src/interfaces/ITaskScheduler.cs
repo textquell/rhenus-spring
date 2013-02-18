@@ -37,6 +37,10 @@ namespace Rhenus.Spring
         /// </summary>
         /// <param name="task">the task to execute</param>
         /// <param name="startTime">the time when the task should be run</param>
+        /// <exception cref="System.ArgumentNullException">is thrown when the task parameter is 
+        /// null</exception>
+        /// <exception cref="System.ArgumentException">is thrown when startTime parameter is 
+        /// DateTime.Now or earlier</exception>
         void ScheduleTask( ITask task, System.DateTime startTime );
     }
 }
