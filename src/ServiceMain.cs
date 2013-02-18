@@ -28,6 +28,8 @@ namespace Rhenus
 
         // TODO: Strong-name assembly file
         // TODO: Find out if it is possible to add a 'Parallel' attribute to a class that executes all the classes methods through the task scheduler
+        // TODO: Create a ShutDown callback for modules that is executed when the service is shutting down, so the modules can clean up and terminate gracefully.
+        // TODO: Implement a mechanism that is ignoring further calls to a shutdown request of the service and is shutting it down only once.
 
         class Service
         {
