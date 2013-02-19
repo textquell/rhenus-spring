@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
@@ -52,6 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\config\Settings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\config\app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

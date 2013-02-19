@@ -20,6 +20,7 @@
  */
 
 using System;
+using System.Configuration;
 
 namespace Rhenus
 {
@@ -61,15 +62,25 @@ namespace Rhenus
                 #endregion
                 else //assume that the user wants to start the service
                 {
-                    Console.WriteLine(Configuration.Settings.Default.MyFirstSetting);
                     Service currentService = new Service();
+                    AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( currentService.CatchUnhandledException );
+
+                    System.Configuration.Configuration conf = ConfigurationManager.OpenExeConfiguration( System.IO.Path.Combine( Environment.CurrentDirectory, "Rhenus Service.exe" ) );
+                    ConfigurationSectionGroup sections = conf.GetSectionGroup( "applicationSettings" );
+                    ConfigurationSectionCollection definedSections = sections.Sections;
+                    Console.WriteLine();
+                    Console.WriteLine( "The service is going to load the following modules:" );
+                    Console.WriteLine();
+                    foreach ( var currentSection in definedSections.Keys )
+                    {
+                        Console.WriteLine( currentSection );
+                    }
                     currentService.StartRunning();
                 }
             }
 
             void StartRunning()
             {
-                AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( this.CatchUnhandledException );
                 // TODO: Set up the Service here, loading initial modules and setting requiered properties.
                 int loopPasses = 0;
                 while ( this.isRunning )
@@ -86,7 +97,7 @@ namespace Rhenus
             {
                 Exception criticalException = (Exception)e.ExceptionObject;
                 Console.WriteLine( "Unhandled Exception caught: " + criticalException.Message );
-                Console.WriteLine(criticalException.StackTrace );
+                Console.WriteLine( criticalException.StackTrace );
                 Environment.Exit( 1 );
             }
 
