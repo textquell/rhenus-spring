@@ -10,6 +10,11 @@ bin
 # Assembly information, since they are created during the build
 AssemblyInfo.cs
 
+# Results of various test tools is created locally
+NUnit
+FxCop
+Simian
+
 #################
 ## Visual Studio
 #################
