@@ -40,9 +40,6 @@
     <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />
     <Compile Include="src\interfaces\ITaskScheduler.cs" />
     <Compile Include="src\ServiceMain.cs" />
