@@ -19,24 +19,28 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  */
 
-namespace Rhenus
+namespace Rhenus.Spring
 {
-    namespace Spring
+    /// <summary>
+    /// Provides scheduling means for <see cref="Rhenus.Spring.ITask">tasks</see>
+    /// </summary>
+    public interface ITaskScheduler
     {
-        public interface ITaskScheduler
-        {
-            /// <summary>
-            /// Schedules a task to run a soon as possible.
-            /// </summary>
-            /// <param name="task">the task to execute</param>
-            void ScheduleTask( ITask task );
+        /// <summary>
+        /// Schedules a task to run a soon as possible.
+        /// </summary>
+        /// <param name="task">the task to execute</param>
+        void ScheduleTask( ITask task );
 
-            /// <summary>
-            /// Schedules a task to run as soon as possible when the startTime has passed.
-            /// </summary>
-            /// <param name="task">the task to execute</param>
-            /// <param name="startTime">the time when the task should be run</param>
-            void ScheduleTask( ITask task, System.DateTime startTime );
-        }
+        /// <summary>
+        /// Schedules a task to run as soon as possible when the startTime has passed.
+        /// </summary>
+        /// <param name="task">the task to execute</param>
+        /// <param name="startTime">the time when the task should be run</param>
+        /// <exception cref="System.ArgumentNullException">is thrown when the task parameter is 
+        /// null</exception>
+        /// <exception cref="System.ArgumentException">is thrown when startTime parameter is 
+        /// DateTime.Now or earlier</exception>
+        void ScheduleTask( ITask task, System.DateTime startTime );
     }
 }

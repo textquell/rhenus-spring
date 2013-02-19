@@ -3,53 +3,55 @@
 <project name="Rhenus" default="test" basedir=".">
   <description>Build file for building the Rhenus project</description>
   <tstamp property="build.date" pattern="dd.MM.yyyy" />
-  
+
   <!-- current version properties -->
   <property name="version.major" value="0" readonly="true" />
   <property name="version.minor" value="1" readonly="true" />
-  <property name="version.buildnumber" value="0" readonly="true" /> <!-- defaults to 0, will be set by the build server for releases -->
-  <property name="version.revision" value="0" readonly="true" />
-  
+  <property name="version.buildnumber" value="0" />
+  <!-- defaults to 0, will be set by the build server for releases -->
+  <property name="version.revision" value="0" />
+
   <property name="project.name" value="Rhenus Service" />
   <property name="project.version" value="${version.major}.${version.minor}" />
-  <property name="project.outdir" value="bin" readonly="true" />
-  <property name="project.artifactsDir" value="artifacts" readonly="true" />
-  
+  <property name="project.outdir" value="bin" />
+  <property name="project.artifactsDir" value="artifacts" />
+
   <!-- build defaults (assuming a release build) -->
   <property name="build.configuration" value="debug" />
   <property name="build.createDebugInfo" value="false" />
   <property name="build.optimization" value="true" />
-  <property name="build.outputType" value="exe" /> <!-- possible values: exe||winexe||library||module -->
+  <property name="build.outputType" value="exe" />
+  <!-- possible values: exe||winexe||library||module -->
   <property name="build.defines" value="TRACE" dynamic="true" />
-  
+
   <property name="artifacts.extension" value=".exe" readonly="true" />
   <property name="artifacts.configurationIndicator" value="" />
-    
+
   <!-- Folder structure -->
   <patternset id="rhenus.service">
     <include name="src/*.cs" />
     <include name="src/interfaces/*.cs" />
     <include name="src/config/*.cs" />
   </patternset>
-  
+
   <patternset id="rhenus.service.tests">
     <include name="src/tests/*.cs" />
   </patternset>
 
   <target name="help" description="Describe usage of this file">
-        <echo message="Synopsis:" />
-        <echo message="  nant" />
-        <echo message="  nant [debug|release] [clean|build|test|publish]" />
-        <echo message="" />
-        <echo message="Targets:" />
-        <echo message="  clean    - clean the files for the current project configuration" />
-        <echo message="  debug    - setup the build for 'debug' project configuration" />
-        <echo message="  release  - setup the build for 'release' project configuration (the default)" />
-        <echo message="  test     - builds the project and runs the tests on it" />
-        <echo message="  publish  - is strong naming and publishing the assembly" />
-        <echo message="" />
-    </target>
-  
+    <echo message="Synopsis:" />
+    <echo message="  nant" />
+    <echo message="  nant [debug|release] [clean|build|test|publish]" />
+    <echo message="" />
+    <echo message="Targets:" />
+    <echo message="  clean    - clean the files for the current project configuration" />
+    <echo message="  debug    - setup the build for 'debug' project configuration" />
+    <echo message="  release  - setup the build for 'release' project configuration (the default)" />
+    <echo message="  test     - builds the project and runs the tests on it" />
+    <echo message="  publish  - is strong naming and publishing the assembly" />
+    <echo message="" />
+  </target>
+
   <!-- Preparation tasks -->
   <target name="debug" description="Performs a debug build">
     <property name="build.configuration" value="debug" />
@@ -58,7 +60,7 @@
     <property name="build.defines" value="TRACE, DEBUG" />
     <property name="artifacts.configurationIndicator" value=" D" />
   </target>
-  
+
   <target name="release" description="Performs a release build">
     <property name="build.configuration" value="release" />
     <property name="build.createDebugInfo" value="false" />
@@ -66,30 +68,31 @@
     <property name="build.defines" value="TRACE" />
     <property name="artifacts.configurationIndicator" value="" />
   </target>
-  
+
   <!-- Major tasks -->
   <target name="build" depends="create-assemblyinfo" description="Compiling the project">
     <echo message="Compiling ${project.name} version ${project.version}" />
-    
-    <csc target="${build.outputType}" 
-       output="${project.artifactsDir}\${project.name}${artifacts.configurationIndicator}${artifacts.extension}" 
-       debug="${build.createDebugInfo}" 
+
+    <csc target="${build.outputType}"
+       output="${project.artifactsDir}\${project.name}${artifacts.configurationIndicator}${artifacts.extension}"
+       debug="${build.createDebugInfo}"
        optimize="${build.optimization}"
        define="${build.defines}">
       <nowarn>
-        <!-- example: <warning number="0519" />--> <!-- don't warn about missing member documentation -->
+        <!-- example: <warning number="0519" />-->
+        <!-- don't warn about missing member documentation -->
       </nowarn>
-      
+
       <sources failonempty="true">
         <patternset refid="rhenus.service" />
         <include name="src/AssemblyInfo.cs" />
       </sources>
-      
+
       <references>
         <include name="System.dll" />
         <include name="System.Diagnostics.dll" />
       </references>
-      
+
       <resources />
     </csc>
     <copy file="src/config/app.config" tofile="${project.artifactsDir}/${project.name}${artifacts.configurationIndicator}${artifacts.extension}.config" />
@@ -99,62 +102,67 @@
     <call target="clean" />
     <call target="build" />
   </target>
-  
-  <target name="buildTests" depends="build" description="Builds the test project">
-        <csc target="library" output="${project.artifactsDir}\${project.name}.Tests.dll" debug="${build.createDebugInfo}">
+
+  <target name="buildTests" description="Builds the test project">
+    <csc target="library" output="${project.artifactsDir}\${project.name}.Tests.dll" debug="${build.createDebugInfo}">
       <sources>
+        <patternset refid="rhenus.service" />
         <patternset refid="rhenus.service.tests" />
       </sources>
       <references>
         <include name="System.dll" />
         <include name="${nant::get-base-directory()}/lib/common/2.0/NUnit.Framework.dll" />
       </references>
-        </csc>
-        <!-- this copies your App.config to a file that can be found by NUnit when testing -->
-        <!-- <copy file="Project1.Tests\App.config" tofile="${build.dir}\Project1.Tests.dll.config" /> -->
-    </target>
-  
+    </csc>
+    <!-- this copies your App.config to a file that can be found by NUnit when testing -->
+    <!-- <copy file="Project1.Tests\App.config" tofile="${build.dir}\Project1.Tests.dll.config" /> -->
+  </target>
+
   <target name="test" depends="buildTests" description="Running the tests on the fresh build">
     <nunit2 labels="true">
-      <formatter type="Plain" />
+      <formatter type="Xml" extension=".xml" outputdir="NUnit" usefile="true"/>
       <test assemblyname="${project.artifactsDir}/${project.name}.Tests.dll" appconfig="MyProject.Tests.dll.config" />
     </nunit2>
   </target>
-  
+
   <target name="publish" depends="test" description="Publishing a fresh built">
   </target>
-  
+
   <target name="clean" description="Deletes all output files and folders">
     <delete dir="${project.outdir}" if="${directory::exists(project.outdir)}"/>
     <delete dir="${project.artifactsDir}" if="${directory::exists(project.artifactsDir)}"/>
   </target>
-  
+
   <!-- Helper targets -->
-  <target name="create-assemblyinfo">
-        <!-- ensure src/AssemblyInfo.cs is writable if it already exists -->
-        <attrib file="src/AssemblyInfo.cs" readonly="false" if="${file::exists('src/AssemblyInfo.cs')}" />
-        <!-- generate the source file holding the assembly attributes -->
-        <asminfo output="src/AssemblyInfo.cs" language="CSharp">
-            <imports>
-                <import namespace="System" />
-                <import namespace="System.Reflection" />
-                <import namespace="System.Runtime.InteropServices" />
-            </imports>
-            <attributes>
-                <attribute type="ComVisibleAttribute" value="false" />
-                <attribute type="CLSCompliantAttribute" value="true" />
+  <target name="create-assemblyinfo" description="Creates an assembly info file to be comiled with the assembly">
+    <!-- ensure src/AssemblyInfo.cs is writable if it already exists -->
+    <attrib file="src/AssemblyInfo.cs" readonly="false" if="${file::exists('src/AssemblyInfo.cs')}" />
+    <!-- generate the source file holding the assembly attributes -->
+    <asminfo output="src/AssemblyInfo.cs" language="CSharp">
+      <imports>
+        <import namespace="System" />
+        <import namespace="System.Reflection" />
+        <import namespace="System.Runtime.InteropServices" />
+      </imports>
+      <attributes>
+        <attribute type="ComVisibleAttribute" value="false" />
+        <attribute type="CLSCompliantAttribute" value="true" />
         <attribute type="Guid" value="fbc0905d-b9b2-4384-8486-ec1afa98ebbd" />
-                <attribute type="AssemblyTitleAttribute" value="${project.name}" />
-                <attribute type="AssemblyDescriptionAttribute" value="Base service of the Rhenus framework" />
-                <attribute type="AssemblyConfigurationAttribute" value="${build.configuration}" />
-                <attribute type="AssemblyCompanyAttribute" value="http://textquell.com" />
-                <attribute type="AssemblyProductAttribute" value="Rhenus" />
-                <attribute type="AssemblyCopyrightAttribute" value="Copyright (C) 2013-${datetime::get-year(datetime::now())} Hans Meyer" />
-                <attribute type="AssemblyTrademarkAttribute" value="" />
-                <attribute type="AssemblyCultureAttribute" value="" />
-                <attribute type="AssemblyVersionAttribute" value="${project.version}.${version.buildnumber}.${version.revision}" />
-                <attribute type="AssemblyInformationalVersionAttribute" value="${project.version}" />
-            </attributes>
-        </asminfo>
-    </target>
+        <attribute type="AssemblyTitleAttribute" value="${project.name}" />
+        <attribute type="AssemblyDescriptionAttribute" value="Base service of the Rhenus framework" />
+        <attribute type="AssemblyConfigurationAttribute" value="${build.configuration}" />
+        <attribute type="AssemblyCompanyAttribute" value="http://textquell.com" />
+        <attribute type="AssemblyProductAttribute" value="Rhenus" />
+        <attribute type="AssemblyCopyrightAttribute" value="Copyright (C) 2013-${datetime::get-year(datetime::now())} Hans Meyer" />
+        <attribute type="AssemblyTrademarkAttribute" value="" />
+        <attribute type="AssemblyCultureAttribute" value="" />
+        <attribute type="AssemblyVersionAttribute" value="${project.version}.${version.buildnumber}.${version.revision}" />
+        <attribute type="AssemblyInformationalVersionAttribute" value="${project.version}" />
+      </attributes>
+    </asminfo>
+  </target>
+
+  <target name="sign" descritpion="Signs the output assembly">
+  </target>
+
 </project>
