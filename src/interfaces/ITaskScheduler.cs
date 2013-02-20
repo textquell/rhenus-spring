@@ -21,6 +21,8 @@
 
 namespace Rhenus.Spring
 {
+    // TODO: RegisterDependencyAttribute for IModule implementors to provide dependency checking
+    
     /// <summary>
     /// Provides scheduling means for <see cref="Rhenus.Spring.ITask">tasks</see>
     /// </summary>
