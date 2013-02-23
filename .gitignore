@@ -3,12 +3,13 @@
 #################
 
 # Build output folders and artifacts
-
 artifacts
-bin
 
 # Assembly information, since they are created during the build
 AssemblyInfo.cs
+
+# User information created by MonoDevelop
+*.userprefs
 
 # Results of various test tools is created locally
 NUnit

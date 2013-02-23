@@ -65,7 +65,7 @@ namespace Rhenus
                     Service currentService = new Service();
                     AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( currentService.CatchUnhandledException );
 
-                    System.Configuration.Configuration conf = ConfigurationManager.OpenExeConfiguration( System.IO.Path.Combine( Environment.CurrentDirectory, "Rhenus Service.exe" ) );
+					System.Configuration.Configuration conf = ConfigurationManager.OpenExeConfiguration( System.IO.Path.Combine( Environment.CurrentDirectory, "Rhenus Service.exe" ) );
                     ConfigurationSectionGroup sections = conf.GetSectionGroup( "applicationSettings" );
                     ConfigurationSectionCollection definedSections = sections.Sections;
                     Console.WriteLine();
