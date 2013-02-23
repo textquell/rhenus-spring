@@ -1,4 +1,4 @@
-﻿/*    The Rhenus project
+/*    The Rhenus project
  *    
  *    This file is part of the Rhenus framework that aimes to be a 
  *    horizontally scalable application server with a focus on games.
@@ -35,13 +35,14 @@ namespace Rhenus
         class Service
         {
             #region Fields
-            ITaskScheduler TaskScheduler { get; set; }
+			private ITaskScheduler taskScheduler;
+			public ITaskScheduler TaskScheduler {get { return taskScheduler;}}
             bool isRunning;
             #endregion
 
             Service()
             {
-                this.TaskScheduler = new SimpleTaskScheduler();
+                this.taskScheduler = new SimpleTaskScheduler();
                 this.isRunning = false;
             }
 
@@ -65,13 +66,14 @@ namespace Rhenus
                     Service currentService = new Service();
                     AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( currentService.CatchUnhandledException );
 
-					System.Configuration.Configuration conf = ConfigurationManager.OpenExeConfiguration( System.IO.Path.Combine( Environment.CurrentDirectory, "Rhenus Service.exe" ) );
+                    System.Configuration.Configuration conf = ConfigurationManager.OpenExeConfiguration( System.IO.Path.Combine( Environment.CurrentDirectory, "Rhenus Service.exe" ) );
                     ConfigurationSectionGroup sections = conf.GetSectionGroup( "applicationSettings" );
                     ConfigurationSectionCollection definedSections = sections.Sections;
                     Console.WriteLine();
                     Console.WriteLine( "The service is going to load the following modules:" );
                     Console.WriteLine();
-                    foreach ( var currentSection in definedSections.Keys )
+					// TODO: Using compiler switches for the versions of .NET where "var" is a valid Type?
+                    foreach (  System.Collections.Specialized.NameObjectCollectionBase.KeysCollection currentSection in definedSections.Keys )
                     {
                         Console.WriteLine( currentSection );
                     }

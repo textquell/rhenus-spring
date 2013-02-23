@@ -9,6 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Rhenus.Spring.Tests</RootNamespace>
     <AssemblyName>Rhenus.Spring.Tests</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
