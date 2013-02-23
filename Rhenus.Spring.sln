@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rhenus.Spring", "Rhenus.Spring.csproj", "{8E76128F-2954-4E97-B146-342AB13161BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rhenus.Spring.Tests", "Rhenus.Spring.Tests.csproj", "{AD0995E9-6E5D-491D-84D7-992153150B70}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+		Default|Any CPU = Default|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8E76128F-2954-4E97-B146-342AB13161BF}.Debug|x86.ActiveCfg = Debug|x86
+		{8E76128F-2954-4E97-B146-342AB13161BF}.Debug|x86.Build.0 = Debug|x86
+		{8E76128F-2954-4E97-B146-342AB13161BF}.Default|Any CPU.ActiveCfg = Debug|x86
+		{8E76128F-2954-4E97-B146-342AB13161BF}.Default|Any CPU.Build.0 = Debug|x86
+		{8E76128F-2954-4E97-B146-342AB13161BF}.Release|x86.ActiveCfg = Release|x86
+		{8E76128F-2954-4E97-B146-342AB13161BF}.Release|x86.Build.0 = Release|x86
+		{AD0995E9-6E5D-491D-84D7-992153150B70}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AD0995E9-6E5D-491D-84D7-992153150B70}.Debug|x86.Build.0 = Debug|Any CPU
+		{AD0995E9-6E5D-491D-84D7-992153150B70}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD0995E9-6E5D-491D-84D7-992153150B70}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{AD0995E9-6E5D-491D-84D7-992153150B70}.Release|x86.ActiveCfg = Release|Any CPU
+		{AD0995E9-6E5D-491D-84D7-992153150B70}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Rhenus.Spring.csproj
+	EndGlobalSection
+EndGlobal
