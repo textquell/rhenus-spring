@@ -24,12 +24,13 @@ namespace Rhenus
         [TestFixture]
         public class SimpleTaskSchedulerTest
         {
-            SimpleTaskScheduler scheduler;
+            ITaskScheduler scheduler;
 
             [SetUp]
             public void Init()
             {
-                scheduler = new SimpleTaskScheduler();
+				Service service = new Service ();
+                scheduler = service.TaskScheduler;
             }
 
             public void Destroy()

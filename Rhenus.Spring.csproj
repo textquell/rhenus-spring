@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,7 +10,7 @@
     <RootNamespace>Rhenus.Spring</RootNamespace>
     <AssemblyName>Rhenus.Spring</AssemblyName>
     <StartupObject>Rhenus.Spring.Service</StartupObject>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -33,10 +33,13 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="src\ServiceMain.cs" />
+    <Compile Include="src\ServiceMain.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="src\SimpleTaskScheduler.cs" />
     <Compile Include="src\config\Settings.cs" />
     <Compile Include="src\interfaces\ITask.cs" />

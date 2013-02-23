@@ -21,6 +21,7 @@
 
 using System;
 using System.Configuration;
+using System.ServiceProcess;
 
 namespace Rhenus
 {
@@ -32,17 +33,16 @@ namespace Rhenus
         // TODO: Create a ShutDown callback for modules that is executed when the service is shutting down, so the modules can clean up and terminate gracefully.
         // TODO: Implement a mechanism that is ignoring further calls to a shutdown request of the service and is shutting it down only once.
 
-        class Service
+        public class Service: ServiceBase
         {
             #region Fields
-			private ITaskScheduler taskScheduler;
-			public ITaskScheduler TaskScheduler {get { return taskScheduler;}}
+            public ITaskScheduler TaskScheduler { get; private set; }
             bool isRunning;
             #endregion
 
-            Service()
+            public Service()
             {
-                this.taskScheduler = new SimpleTaskScheduler();
+                this.TaskScheduler = new SimpleTaskScheduler();
                 this.isRunning = false;
             }
 
@@ -72,7 +72,7 @@ namespace Rhenus
                     Console.WriteLine();
                     Console.WriteLine( "The service is going to load the following modules:" );
                     Console.WriteLine();
-					// TODO: Using compiler switches for the versions of .NET where "var" is a valid Type?
+                    // TODO: Using compiler switches for the versions of .NET where "var" is a valid Type?
                     foreach (  System.Collections.Specialized.NameObjectCollectionBase.KeysCollection currentSection in definedSections.Keys )
                     {
                         Console.WriteLine( currentSection );
