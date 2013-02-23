@@ -33,21 +33,20 @@
     <Reference Include="nunit.framework">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="src\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\ServiceMain.cs" />
-    <Compile Include="src\SimpleTaskScheduler.cs" />
-    <Compile Include="src\config\Settings.cs" />
-    <Compile Include="src\interfaces\ITask.cs" />
-    <Compile Include="src\interfaces\ITaskScheduler.cs" />
     <Compile Include="src\tests\Service.Tests.cs" />
     <Compile Include="src\tests\SimpleTaskScheduler.Tests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\config\app.config" />
+    <ProjectReference Include="Rhenus.Spring.csproj">
+      <Project>{8E76128F-2954-4E97-B146-342AB13161BF}</Project>
+      <Name>Rhenus.Spring</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
