@@ -44,10 +44,13 @@ namespace Rhenus
 			protected override void OnStart (string[] args)
 			{
 				AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler (this.CatchUnhandledException);
-				State = new ServiceState ();
-				State.CurrentState = ServiceState.State.Starting;
+				this.State = new ServiceState ();
+				this.State.CurrentState = ServiceState.State.Starting;
 
-				TaskScheduler = new SimpleTaskScheduler ();
+				this.TaskScheduler = new SimpleTaskScheduler ();
+
+				ServiceName = "Rhenus Service";
+				CanPauseAndContinue = false;
 
 				LoadModules ();
 
@@ -55,28 +58,28 @@ namespace Rhenus
 
 			protected override void OnContinue ()
 			{
-				// TODO: Continue scheudling tasks with the ITaskScheduler
-				State.CurrentState = ServiceState.State.Running;
+				// TODO: Continue scheduling tasks with the ITaskScheduler
+				this.State.CurrentState = ServiceState.State.Running;
 				base.OnContinue ();
 			}
 
 			protected override void OnPause ()
 			{
 				// TODO: pause scheduling tasks with the ITaskScheduler
-				State.CurrentState = ServiceState.State.Paused;
+				this.State.CurrentState = ServiceState.State.Paused;
 				base.OnPause ();
 			}
 
 			protected override void OnShutdown ()
 			{
 				// TODO: implement a timer that is forcefully shutting down this service if the modules are not unloaded timely
-				State.CurrentState = ServiceState.State.ShuttingDown;
+				this.State.CurrentState = ServiceState.State.ShuttingDown;
 				base.OnShutdown ();
 			}
 
 			protected override void OnStop ()
 			{
-				State.CurrentState = ServiceState.State.ShuttingDown;
+				this.State.CurrentState = ServiceState.State.ShuttingDown;
 				base.OnStop ();
 			}
 			#endregion
@@ -89,6 +92,8 @@ namespace Rhenus
 					} else {
 						PrintHelp ();
 					}
+				} else {
+					ServiceBase.Run (new Service ());
 				}
 			}
 

@@ -3,78 +3,78 @@ using NUnit.Framework;
 
 namespace Rhenus
 {
-    namespace Spring
-    {
+	namespace Spring
+	{
 
-        class DemoTask: ITask
-        {
-            public int DemoInt { get; set; }
+		class DemoTask: ITask
+		{
+			public int DemoInt { get; set; }
 
-            public DemoTask()
-            {
-                DemoInt = 42;
-            }
+			public DemoTask ()
+			{
+				DemoInt = 42;
+			}
 
-            public void Run( object state )
-            {
-                DemoInt *= 2;
-            }
-        }
+			public void Run (object state)
+			{
+				DemoInt *= 2;
+			}
+		}
 
-        [TestFixture]
-        public class SimpleTaskSchedulerTest
-        {
-            ITaskScheduler scheduler;
+		[TestFixture]
+		public class SimpleTaskSchedulerTest
+		{
+			ITaskScheduler scheduler;
 
-            [SetUp]
-            public void Init()
-            {
+			[SetUp]
+			public void Init ()
+			{
 				Service service = new Service ();
-                scheduler = service.TaskScheduler;
-            }
+				scheduler = service.TaskScheduler;
+			}
 
-            public void Destroy()
-            {
-                scheduler = null;
-            }
+			public void Destroy ()
+			{
+				scheduler = null;
+			}
 
-            [Test]
-            public void TestForRunExecution()
-            {
-                ITask task = new DemoTask();
-                scheduler.ScheduleTask( task );
-                System.Threading.Thread.Sleep( 5 );
+			[Test]
+			public void TestForRunExecution ()
+			{
+				ITask task = new DemoTask ();
+				scheduler.ScheduleTask (task);
+				System.Threading.Thread.Sleep (5);
 
-                DemoTask result = (DemoTask)task;
-                Assert.AreEqual( 84, result.DemoInt );
-            }
+				DemoTask result = (DemoTask)task;
+				Assert.AreEqual (84, result.DemoInt);
+			}
 
-            [Test]
-            public void TestForDelayedExecution()
-            {
-                ITask task = new DemoTask();
-                scheduler.ScheduleTask( task, DateTime.Now.AddMilliseconds( 10 ) );
-                System.Threading.Thread.Sleep( 30 );
+			[Test]
+			public void TestForDelayedExecution ()
+			{
+				ITask task = new DemoTask ();
+				scheduler.ScheduleTask (task, DateTime.Now.AddMilliseconds (10));
+				System.Threading.Thread.Sleep (30);
 
-                DemoTask result = (DemoTask)task;
-                Assert.AreEqual( 84, result.DemoInt );
-            }
+				DemoTask result = (DemoTask)task;
+				Assert.AreEqual (84, result.DemoInt);
+			}
 
-            [Test]
-            [ExpectedException( typeof( System.ArgumentNullException ) )]
-            public void ExpectNullRefExceptionSimple()
-            {
-                ITask task = null;
-                scheduler.ScheduleTask( task );
-            }
+			[Test]
+			[ExpectedException( typeof( System.ArgumentNullException ) )]
+			public void ExpectNullRefExceptionSimple ()
+			{
+				ITask task = null;
+				scheduler.ScheduleTask (task);
+			}
 
-            [Test]
-            [ExpectedException( typeof( System.ArgumentNullException ) )]
-            public void ExpectNullRefExceptionDelayed()
-            {
-                ITask task = null;
-                scheduler.ScheduleTask( task, DateTime.Now.AddMilliseconds( 5 ) );
-            }
-        }
-    }
+			[Test]
+			[ExpectedException( typeof( System.ArgumentNullException ) )]
+			public void ExpectNullRefExceptionDelayed ()
+			{
+				ITask task = null;
+				scheduler.ScheduleTask (task, DateTime.Now.AddMilliseconds (5));
+			}
+		}
+	}
 }
