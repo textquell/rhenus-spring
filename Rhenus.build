@@ -17,7 +17,7 @@
   <property name="project.artifactsDir" value="artifacts" />
 
   <!-- build defaults (assuming a release build) -->
-  <property name="build.configuration" value="debug" />
+  <property name="build.configuration" value="release" />
   <property name="build.createDebugInfo" value="false" />
   <property name="build.optimization" value="true" />
   <!-- possible values: exe||winexe||library||module -->
@@ -127,6 +127,7 @@
     </nunit2>
   </target>
   
+  <!--if="${build.configuration} == release"-->
   <target name="deploy" depends="build" description="Creates the structure that is going to be deployed.">
   	<mkdir dir="${project.outdir}" unless="${directory::exists(project.outdir)}" />
   	<mkdir dir="${project.outdir}/bin" unless="${directory::exists(project.outdir)}" />
