@@ -37,45 +37,49 @@ namespace Rhenus
 		{
             #region Fields
 			public ITaskScheduler TaskScheduler { get; private set; }
+			public ServiceState State { get; set; }
             #endregion
 
-			public Service ()
-			{
-				this.TaskScheduler = new SimpleTaskScheduler ();
-			}
-
+			#region Service Control
 			protected override void OnStart (string[] args)
 			{
-				Service currentService = new Service ();
-				AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler (currentService.CatchUnhandledException);
-				
+				AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler (this.CatchUnhandledException);
+				State = new ServiceState ();
+				State.CurrentState = ServiceState.State.Starting;
+
+				TaskScheduler = new SimpleTaskScheduler ();
+
 				LoadModules ();
 
-				base.OnStart (args);
 			}
 
 			protected override void OnContinue ()
 			{
 				// TODO: Continue scheudling tasks with the ITaskScheduler
+				State.CurrentState = ServiceState.State.Running;
 				base.OnContinue ();
 			}
-			
+
 			protected override void OnPause ()
 			{
 				// TODO: pause scheduling tasks with the ITaskScheduler
+				State.CurrentState = ServiceState.State.Paused;
 				base.OnPause ();
 			}
-			
+
 			protected override void OnShutdown ()
 			{
 				// TODO: implement a timer that is forcefully shutting down this service if the modules are not unloaded timely
+				State.CurrentState = ServiceState.State.ShuttingDown;
 				base.OnShutdown ();
 			}
-			
+
 			protected override void OnStop ()
 			{
+				State.CurrentState = ServiceState.State.ShuttingDown;
 				base.OnStop ();
 			}
+			#endregion
 
 			static void Main (string[] args)
 			{
@@ -88,6 +92,7 @@ namespace Rhenus
 				}
 			}
 
+			#region Helper Functions
 			static void LoadModules ()
 			{
 				System.Configuration.Configuration conf = ConfigurationManager.OpenExeConfiguration (System.IO.Path.Combine (Environment.CurrentDirectory, "Rhenus Service.exe"));
@@ -104,10 +109,11 @@ namespace Rhenus
 
 			private void CatchUnhandledException (object sender, UnhandledExceptionEventArgs e)
 			{
+				State.CurrentState = ServiceState.State.CaughtUnhandledException;
+
 				Exception criticalException = (Exception)e.ExceptionObject;
 				Console.WriteLine ("Unhandled Exception caught: " + criticalException.Message);
 				Console.WriteLine (criticalException.StackTrace);
-				Environment.Exit (1);
 			}
 
 			[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1303", MessageId = "System.Console.WriteLine(System.String)" )]
@@ -138,6 +144,7 @@ namespace Rhenus
 				Console.WriteLine ("  This is free software, and you are welcome to redistribute it");
 				Console.WriteLine ("  under certain conditions; see LICENSE.md for details.");
 			}
+			#endregion
 		}
 	}
 }
