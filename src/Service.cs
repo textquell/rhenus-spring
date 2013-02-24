@@ -18,7 +18,6 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  */
-
 using System;
 using System.Configuration;
 using System.ServiceProcess;
@@ -32,11 +31,11 @@ namespace Rhenus
 		// TODO: Find out if it is possible to add a 'Parallel' attribute to a class that executes all the classes methods through the task scheduler
 		// TODO: Create a ShutDown callback for modules that is executed when the service is shutting down, so the modules can clean up and terminate gracefully.
 		// TODO: Implement a mechanism that is ignoring further calls to a shutdown request of the service and is shutting it down only once.
-
 		public class Service: ServiceBase
 		{
             #region Fields
 			public ITaskScheduler TaskScheduler { get; private set; }
+
 			public ServiceState State { get; set; }
             #endregion
 
@@ -49,8 +48,9 @@ namespace Rhenus
 
 				this.TaskScheduler = new SimpleTaskScheduler ();
 
-				ServiceName = "Rhenus Service";
-				CanPauseAndContinue = false;
+				this.ServiceName = "Rhenus Service";
+				this.CanPauseAndContinue = false;
+				this.CanShutdown = true;
 
 				LoadModules ();
 
