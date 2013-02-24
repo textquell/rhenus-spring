@@ -61,6 +61,17 @@ namespace Rhenus.Spring
 			}
 		}
 
+		public IPeriodicTaskController SchedulePeriodicTask (ITask task, TimeSpan period)
+		{
+			if (task == null) {
+				throw new System.ArgumentNullException ();
+			}
+			if (period.Ticks <= 0) {
+				throw new System.ArgumentException ();
+			}
+			return new PeriodicTask (task, period);
+		}
+
 		/// <summary>
 		/// Delays a task with a <see cref="System.Threading.Timer"/>.
 		/// </summary>
@@ -89,12 +100,43 @@ namespace Rhenus.Spring
 			/// <summary>
 			/// Enqueues the task to the ThreadPool.
 			/// </summary>
-			private void timeToRun (object sender, System.Timers.ElapsedEventArgs args)
+			private void TimeToRun (object sender, System.Timers.ElapsedEventArgs args)
 			{
 				ThreadPool.QueueUserWorkItem (new WaitCallback (taskToRun.Run));
 				this.timer.Dispose ();
+				this.taskToRun = null;
 			}
 
+		}
+
+		private class PeriodicTask: IPeriodicTaskController
+		{
+			private ITask taskToRunPeriodically;
+			private Timer timer;
+			private TimeSpan period;
+
+			public PeriodicTask (ITask task, TimeSpan period)
+			{
+				this.taskToRunPeriodically = task;
+				this.period = period;
+			}
+
+			#region IPeriodicTaskController implementation
+			public void Cancel ()
+			{
+				this.timer.Dispose ();
+				taskToRunPeriodically = null;
+			}
+			public void Use ()
+			{
+				this.timer = new Timer (new TimerCallback (this.Execute), null, new TimeSpan (0), this.period);
+			}
+			#endregion
+
+			private void Execute (object state)
+			{
+				ThreadPool.QueueUserWorkItem (new WaitCallback (taskToRunPeriodically.Run));
+			}
 		}
 	}
 }

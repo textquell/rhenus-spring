@@ -45,6 +45,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="src\ServiceState.cs" />
+    <Compile Include="src\interfaces\IPeriodicTaskController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\config\app.config" />
