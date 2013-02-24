@@ -76,7 +76,7 @@ namespace Rhenus
 			public void TaskScheduledDelayed ()
 			{
 				VerySimpleTask testTask = new VerySimpleTask ();
-				this.taskScheduler.ScheduleTask (testTask, DateTime.Now.AddMilliseconds (5));
+				this.taskScheduler.ScheduleTask (testTask, DateTime.Now.AddMilliseconds (10));
 				Thread.Sleep (25);
 				Assert.AreEqual (2, testTask.Int);
 			}
