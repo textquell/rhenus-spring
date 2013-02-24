@@ -72,6 +72,7 @@ namespace Rhenus.Spring
 			return new PeriodicTask (task, period);
 		}
 
+		#region Helper Classes
 		/// <summary>
 		/// Delays a task with a <see cref="System.Threading.Timer"/>.
 		/// </summary>
@@ -138,5 +139,6 @@ namespace Rhenus.Spring
 				ThreadPool.QueueUserWorkItem (new WaitCallback (taskToRunPeriodically.Run));
 			}
 		}
+		#endregion
 	}
 }
