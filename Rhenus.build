@@ -128,7 +128,7 @@
   </target>
   
   <!--if="${build.configuration} == release"-->
-  <target name="deploy" depends="build" description="Creates the structure that is going to be deployed.">
+  <target name="deploy" depends="build, test" description="Creates the structure that is going to be deployed.">
   	<mkdir dir="${project.outdir}" unless="${directory::exists(project.outdir)}" />
   	<mkdir dir="${project.outdir}/bin" unless="${directory::exists(project.outdir)}" />
   	<copy file="${project.artifactsDir}/${build.outFileName}" tofile="${project.outdir}/bin/${build.outFileName}" />
@@ -141,6 +141,10 @@
   <target name="clean" description="Deletes all output files and folders">
     <delete dir="${project.outdir}" if="${directory::exists(project.outdir)}"/>
     <delete dir="${project.artifactsDir}" if="${directory::exists(project.artifactsDir)}"/>
+    <delete dir="NUnit" if="${directory::exists('NUnit')}"/>
+    <delete dir="test-results" if="${directory::exists('test-results')}"/>
+    <delete dir="bin" if="${directory::exists('bin')}"/>
+    <delete dir="obj" if="${directory::exists('obj')}"/>
   </target>
 
   <!-- Helper targets -->
