@@ -35,22 +35,24 @@ namespace Rhenus
 		{
             #region Fields
 			public ITaskScheduler TaskScheduler { get; private set; }
-
 			public ServiceState State { get; set; }
             #endregion
+
+			public Service ()
+			{
+				AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler (this.CatchUnhandledException);
+				this.TaskScheduler = new SimpleTaskScheduler ();
+				this.State = new ServiceState ();
+
+				SetServiceData ();
+			}
 
 			#region Service Control
 			protected override void OnStart (string[] args)
 			{
-				AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler (this.CatchUnhandledException);
-				this.State = new ServiceState ();
 				this.State.CurrentState = ServiceState.State.Starting;
 
-				this.TaskScheduler = new SimpleTaskScheduler ();
 
-				this.ServiceName = "Rhenus Service";
-				this.CanPauseAndContinue = false;
-				this.CanShutdown = true;
 
 				LoadModules ();
 
@@ -119,6 +121,17 @@ namespace Rhenus
 				Exception criticalException = (Exception)e.ExceptionObject;
 				Console.WriteLine ("Unhandled Exception caught: " + criticalException.Message);
 				Console.WriteLine (criticalException.StackTrace);
+			}
+
+			private void SetServiceData ()
+			{
+				this.ServiceName = "Rhenus Service";
+				this.CanStop = true;
+				this.CanPauseAndContinue = false;
+				this.CanShutdown = true;
+				this.AutoLog = true;
+				this.CanHandlePowerEvent = false;
+				this.CanHandleSessionChangeEvent = false;
 			}
 
 			[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Globalization", "CA1303", MessageId = "System.Console.WriteLine(System.String)" )]
