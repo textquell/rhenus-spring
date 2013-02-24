@@ -15,6 +15,7 @@ AssemblyInfo.cs
 NUnit
 FxCop
 Simian
+test-results
 
 #################
 ## Visual Studio
