@@ -77,7 +77,7 @@ namespace Rhenus
 			{
 				VerySimpleTask testTask = new VerySimpleTask ();
 				this.taskScheduler.ScheduleTask (testTask, DateTime.Now.AddMilliseconds (5));
-				Thread.Sleep (10);
+				Thread.Sleep (15);
 				Assert.AreEqual (2, testTask.Int);
 			}
 
