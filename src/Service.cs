@@ -18,6 +18,7 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  */
+
 using System;
 using System.Configuration;
 using System.ServiceProcess;
@@ -121,7 +122,7 @@ namespace Rhenus
                 State.CurrentState = Spring.State.CaughtUnhandledException;
 
                 Exception criticalException = (Exception)e.ExceptionObject;
-                Console.WriteLine ("Unhandled Exception caught: " + criticalException.Message);
+                Console.WriteLine (Resources.ErrorMessages.ExceptionCaught + criticalException.Message);
                 Console.WriteLine (criticalException.StackTrace);
             }
 

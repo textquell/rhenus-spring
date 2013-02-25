@@ -42,7 +42,7 @@ namespace Rhenus.Spring
             // TODO: write a message when throwing this error. Get this message from a ressource file
             if ( task == null )
             {
-                throw new System.ArgumentNullException();
+                throw new System.ArgumentNullException( Resources.ErrorMessages.TaskNullException );
             }
             ThreadPool.QueueUserWorkItem( new WaitCallback( task.Run ) );
         }
@@ -52,11 +52,11 @@ namespace Rhenus.Spring
         {
             if ( task == null )
             {
-                throw new System.ArgumentNullException( "Task parameter cannot be null" );
+                throw new System.ArgumentNullException( Resources.ErrorMessages.TaskNullException );
             }
             if ( startTime <= DateTime.Now )
             {
-                throw new System.ArgumentException( "Starttime already passed or is DateTime.Now" );
+                throw new System.ArgumentException( Resources.ErrorMessages.StartTimeError );
             }
             try
             {
@@ -74,11 +74,11 @@ namespace Rhenus.Spring
         {
             if ( task == null )
             {
-                throw new System.ArgumentNullException();
+                throw new System.ArgumentNullException( Resources.ErrorMessages.TaskNullException );
             }
             if ( period.Ticks <= 0 )
             {
-                throw new System.ArgumentException();
+                throw new System.ArgumentException(Resources.ErrorMessages.TaskPeriodError);
             }
             return new PeriodicTask( task, period );
         }
@@ -102,7 +102,7 @@ namespace Rhenus.Spring
             /// </summary>
             /// <param name="task">the scheduled task</param>
             /// <param name="startTime">the time at which the task should run.</param>
-            public DelayedTask( ITask task)
+            public DelayedTask( ITask task )
             {
                 this.taskToRun = task;
             }
@@ -122,7 +122,7 @@ namespace Rhenus.Spring
                 ThreadPool.QueueUserWorkItem( new WaitCallback( taskToRun.Run ) );
                 this.Dispose();
             }
-            
+
             public void Dispose()
             {
                 this.timer.Dispose();

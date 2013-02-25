@@ -34,6 +34,7 @@
     <include name="src/*.cs" />
     <include name="src/interfaces/*.cs" />
     <include name="src/config/*.cs" />
+    <include name="res/*.cs" />
   </patternset>
 
   <patternset id="rhenus.service.tests">
@@ -95,7 +96,9 @@
         <include name="System.Diagnostics.dll" />
       </references>
 
-      <resources />
+      <resources>
+        <include name="res/ErrorMessages.resx" />
+      </resources>
     </csc>
     <copy file="src/config/app.config" tofile="${project.artifactsDir}/${build.outFileName}.config" />
   </target>
@@ -126,19 +129,20 @@
       <test assemblyname="${project.artifactsDir}/${project.name}.Tests.dll" appconfig="MyProject.Tests.dll.config" />
     </nunit2>
   </target>
-  
+
   <!--if="${build.configuration} == release"-->
   <target name="deploy" depends="build, test" description="Creates the structure that is going to be deployed.">
-  	<mkdir dir="${project.outdir}" unless="${directory::exists(project.outdir)}" />
-  	<mkdir dir="${project.outdir}/bin" unless="${directory::exists(project.outdir)}" />
-  	<copy file="${project.artifactsDir}/${build.outFileName}" tofile="${project.outdir}/bin/${build.outFileName}" />
-  	<copy file="${project.artifactsDir}/${build.outFileName}.config" tofile="${project.outdir}/bin/${build.outFileName}.config" />
+    <mkdir dir="${project.outdir}" unless="${directory::exists(project.outdir)}" />
+    <mkdir dir="${project.outdir}/bin" unless="${directory::exists(project.outdir)}" />
+    <copy file="${project.artifactsDir}/${build.outFileName}" tofile="${project.outdir}/bin/${build.outFileName}" />
+    <copy file="${project.artifactsDir}/${build.outFileName}.config" tofile="${project.outdir}/bin/${build.outFileName}.config" />
   </target>
 
   <target name="publish" depends="test" description="Publishing a fresh built">
   </target>
 
   <target name="clean" description="Deletes all output files and folders">
+    <delete file="src/AssemblyInfo.cs" if="${file::exists('src/AssemblyInfo.cs')}" />
     <delete dir="${project.outdir}" if="${directory::exists(project.outdir)}"/>
     <delete dir="${project.artifactsDir}" if="${directory::exists(project.artifactsDir)}"/>
     <delete dir="NUnit" if="${directory::exists('NUnit')}"/>
