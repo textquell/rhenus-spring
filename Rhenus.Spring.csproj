@@ -21,6 +21,7 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE;</DefineConstants>
     <WarningLevel>2</WarningLevel>
     <GenerateDocumentation>True</GenerateDocumentation>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -37,13 +39,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <Compile Include="src\AssemblyInfo.cs" />
     <Compile Include="src\SimpleTaskScheduler.cs" />
     <Compile Include="src\config\Settings.cs" />
     <Compile Include="src\interfaces\ITask.cs" />
     <Compile Include="src\interfaces\ITaskScheduler.cs" />
-    <Compile Include="src\Service.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="src\Service.cs" />
     <Compile Include="src\ServiceState.cs" />
     <Compile Include="src\interfaces\IPeriodicTaskController.cs" />
   </ItemGroup>

@@ -22,25 +22,23 @@ using System;
 using System.Configuration;
 using System.ServiceProcess;
 
-namespace Rhenus
+namespace Rhenus.Spring
 {
-	namespace Spring
-	{
-		// TODO: Isn't a struct enough here?
-		public class ServiceState
-		{
-			public enum State
-			{
-				Running = 1,
-				Starting = 2,
-				ShuttingDown = 3,
-				Paused = 4,
-				CaughtUnhandledException = 5
-			}
+    public enum State
+    {
+        None = 0,
+        Running = 1,
+        Starting = 2,
+        ShuttingDown = 3,
+        Paused = 4,
+        CaughtUnhandledException = 5
+    }
 
-			public State CurrentState { get; set; } 
-			// TODO: Create a property that is returning the current number of available Threads in the ThreadPool
-			// TODO: Create a property to get and set the min and max size of the ThreadPool
-		}
-	}
+    // TODO: Isn't a struct enough here?
+    public class ServiceState
+    {
+        public Rhenus.Spring.State CurrentState { get; set; }
+        // TODO: Create a property that is returning the current number of available Threads in the ThreadPool
+        // TODO: Create a property to get and set the min and max size of the ThreadPool
+    }
 }
